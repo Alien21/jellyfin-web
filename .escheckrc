@@ -1,10 +1,10 @@
 {
     "ecmaVersion": "es5",
-    "files": "./dist/**/*.js",
+    "files": "./_output/jellyfin-web/**/*.js",
     "not": [
-        "./dist/libraries/pdf.worker.js",
-        "./dist/libraries/worker-bundle.js",
-        "./dist/libbitsub.*.js",
-        "./dist/serviceworker.js"
+        "./_output/jellyfin-web/libraries/pdf.worker.js",
+        "./_output/jellyfin-web/libraries/worker-bundle.js",
+        "./_output/jellyfin-web/libbitsub.*.js",
+        "./_output/jellyfin-web/serviceworker.js"
     ]
 }

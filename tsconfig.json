@@ -12,7 +12,7 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "outDir": "./dist/",
+    "outDir": "./_output/types/",
     "checkJs": false,
     "strictNullChecks": true,
     "jsx": "react-jsx",

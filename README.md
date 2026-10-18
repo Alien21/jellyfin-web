@@ -39,6 +39,8 @@ Jellyfin Web is the frontend used for most of the clients available for end user
 
 ## Build Process
 
+For repeatable local builds and Linux distribution archives, see [README.build.md](./README.build.md).
+
 ### Dependencies
 
 - [Node.js](https://nodejs.org/en/download)

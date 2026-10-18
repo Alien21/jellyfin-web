@@ -40,6 +40,10 @@ export default tseslint.config(
             'node_modules',
             'coverage',
             'dist',
+            '_output',
+            '_artifacts',
+            '_temp',
+            '_tests',
             '.idea',
             '.vscode'
         ]
@@ -192,6 +196,22 @@ export default tseslint.config(
         },
         rules: {
             '@typescript-eslint/no-require-imports': 'off'
+        }
+    },
+
+    // Native Node.js TypeScript build helpers
+    {
+        files: [ 'scripts/*.mts' ],
+        languageOptions: {
+            sourceType: 'module',
+            parserOptions: {
+                project: './tsconfig.tooling.json',
+                tsconfigRootDir: import.meta.dirname
+            }
+        },
+        // Build helpers target Node.js 24, not the application's legacy browsers.
+        rules: {
+            'compat/compat': 'off'
         }
     },
 

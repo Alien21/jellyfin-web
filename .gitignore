@@ -3,6 +3,12 @@ dist
 web
 node_modules
 
+# Local build outputs, caches, logs and test reports
+/_output/
+/_artifacts/
+/_temp/
+/_tests/
+
 # test coverage
 coverage
 

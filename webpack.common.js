@@ -1,5 +1,6 @@
 const fg = require('fast-glob');
 const path = require('path');
+const { buildPath } = require('./scripts/build-paths.mts');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
@@ -41,6 +42,11 @@ const THEMES_BY_ID = THEMES.reduce((acc, theme) => {
 
 const config = {
     context: path.resolve(__dirname, 'src'),
+    cache: {
+        type: 'filesystem',
+        cacheDirectory: buildPath('_temp', 'webpack'),
+        name: DEV_MODE ? 'development' : 'production'
+    },
     target: 'browserslist',
     entry: {
         'main.jellyfin': './index.jsx',
@@ -132,7 +138,7 @@ const config = {
             }
             return '[name].[hash][ext][query]';
         },
-        path: path.resolve(__dirname, 'dist'),
+        path: buildPath('_output', 'jellyfin-web'),
         publicPath: ''
     },
     optimization: {
@@ -247,7 +253,7 @@ const config = {
                     loader: 'babel-loader',
                     options: {
                         cacheCompression: false,
-                        cacheDirectory: true
+                        cacheDirectory: buildPath('_temp', 'babel')
                     }
                 }]
             },
@@ -264,7 +270,7 @@ const config = {
                     loader: 'babel-loader',
                     options: {
                         cacheCompression: false,
-                        cacheDirectory: true
+                        cacheDirectory: buildPath('_temp', 'babel')
                     }
                 }]
             },
@@ -304,7 +310,7 @@ const config = {
                     loader: 'babel-loader',
                     options: {
                         cacheCompression: false,
-                        cacheDirectory: true,
+                        cacheDirectory: buildPath('_temp', 'babel'),
                         plugins: [
                             '@babel/transform-modules-umd'
                         ]
