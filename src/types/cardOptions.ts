@@ -41,6 +41,7 @@ export interface CardOptions {
     showChannelName?: boolean;
     showTitle?: boolean | string;
     showYear?: boolean | string;
+    showLibraryName?: boolean;
     showDetailsMenu?: boolean;
     missingIndicator?: boolean;
     showLocationTypeIndicator?: boolean;

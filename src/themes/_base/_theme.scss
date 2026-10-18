@@ -243,7 +243,8 @@ a[data-role="button"],
     background-color: $surface-overlay;
 }
 
-.cardPadder .cardImageIcon {
+.cardPadder > .cardImageIcon,
+.cardPadderContent > .cardImageIcon {
     color: $surface-overlay;
 }
 

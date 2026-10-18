@@ -97,7 +97,8 @@ $header-gradient: linear-gradient(to right, #bcbcbc, #a7b4b7, #beb5a5, #adbec2, 
 }
 
 /* Placeholder icon inside a card matches the translucent surface */
-.cardPadder .cardImageIcon {
+.cardPadder > .cardImageIcon,
+.cardPadderContent > .cardImageIcon {
     color: rgba(0, 0, 0, 0.1);
 }
 

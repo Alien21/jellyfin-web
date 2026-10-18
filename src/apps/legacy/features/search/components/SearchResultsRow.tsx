@@ -28,6 +28,7 @@ const SearchResultsRow: FC<SearchResultsRowProps> = ({ title, items = [], cardOp
     useEffect(() => {
         cardBuilder.buildCards(items, {
             itemsContainer: element.current?.querySelector('.itemsContainer'),
+            showLibraryName: true,
             ...cardOptions
         });
 

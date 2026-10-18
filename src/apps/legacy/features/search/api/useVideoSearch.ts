@@ -3,7 +3,7 @@ import { CollectionType } from '@jellyfin/sdk/lib/generated-client/models/collec
 import { useQuery } from '@tanstack/react-query';
 import { AxiosRequestConfig } from 'axios';
 import { useApi } from 'hooks/useApi';
-import { QUERY_OPTIONS } from '../constants/queryOptions';
+import { LIBRARY_INFO_FIELDS, QUERY_OPTIONS } from '../constants/queryOptions';
 import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { MediaType } from '@jellyfin/sdk/lib/generated-client/models/media-type';
 import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client/models/base-item-kind';
@@ -18,6 +18,7 @@ const fetchVideos = async (
     const response = await getLibraryApi(api).getItems(
         {
             ...QUERY_OPTIONS,
+            fields: LIBRARY_INFO_FIELDS,
             userId,
             recursive: true,
             mediaTypes: [MediaType.Video],

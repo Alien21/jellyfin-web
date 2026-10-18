@@ -21,6 +21,8 @@ export interface ItemDto extends BaseItem, TimerInfo, SeriesTimerInfo, SearchHin
     'Artists'?: Array<string> | null;
     'MediaType'?: ItemMediaKind;
     'Name'?: string | null;
+    'LibraryId'?: string | null;
+    'LibraryName'?: string | null;
     'ItemId'?: string | null;
     'ProgramInfo'?: ItemDto;
     'CurrentProgram'?: ItemDto;

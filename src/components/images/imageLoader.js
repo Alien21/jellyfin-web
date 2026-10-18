@@ -100,7 +100,7 @@ function onAnimationEnd(event) {
         }
 
         // HACK: Hide the content of the card padder
-        elem.parentNode?.querySelector('.cardPadder')?.classList.add('lazy-hidden-children');
+        elem.parentNode?.querySelector('.cardPadder, .cardPadderContent')?.classList.add('lazy-hidden-children');
     });
     elem.removeEventListener('animationend', onAnimationEnd);
 }
@@ -143,7 +143,7 @@ function emptyImageElement(elem) {
     }
 
     // HACK: Unhide the content of the card padder
-    elem.parentNode?.querySelector('.cardPadder')?.classList.remove('lazy-hidden-children');
+    elem.parentNode?.querySelector('.cardPadder, .cardPadderContent')?.classList.remove('lazy-hidden-children');
 
     let url;
 

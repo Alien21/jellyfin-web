@@ -42,6 +42,7 @@ import {
 } from './utils/builder';
 import { getBackdropShape, getPortraitShape, getSquareShape } from './utils/shape';
 import { getCardImageUrl } from './utils/url';
+import { getLibraryLabelHtml } from './utils/libraryLabel';
 
 const enableFocusTransform = !browser.slow && !browser.edge;
 
@@ -761,6 +762,8 @@ function buildCard(index, item, apiClient, options) {
         imgUrl
     });
 
+    const libraryLabelHtml = getLibraryLabelHtml(item, options);
+
     let footerCssClass;
     let progressHtml = indicators.getProgressBarHtml(item);
 
@@ -860,13 +863,15 @@ function buildCard(index, item, apiClient, options) {
         blurhashAttrib = 'data-blurhash="' + blurhash + '"';
     }
 
+    const imageLabel = libraryLabelHtml ? `${item.Name} - ${item.LibraryName}` : item.Name;
+
     if (layoutManager.tv) {
         // Don't use the IMG tag with safari because it puts a white border around it
         cardImageContainerOpen = imgUrl ? ('<div class="' + cardImageContainerClasses + ' ' + cardContentClass + ' lazy" data-src="' + imgUrl + '" ' + blurhashAttrib + '>') : ('<div class="' + cardImageContainerClasses + ' ' + cardContentClass + '">');
 
         cardImageContainerClose = '</div>';
     } else {
-        const cardImageContainerAriaLabelAttribute = ` aria-label="${escapeHtml(item.Name)}" role="img"`;
+        const cardImageContainerAriaLabelAttribute = ` aria-label="${escapeHtml(imageLabel)}" role="img"`;
 
         const url = appRouter.getRouteUrl(item);
         // Don't use the IMG tag with safari because it puts a white border around it
@@ -888,9 +893,11 @@ function buildCard(index, item, apiClient, options) {
         });
     }
 
-    cardImageContainerOpen = `<div class="${cardBoxClass}"><div class="${cardScalableClass}"><div class="cardPadder cardPadder-${shape}">${cardPadderIcon}</div>${cardImageContainerOpen}`;
+    const libraryImageOpen = libraryLabelHtml ? '<div class="cardPadder cardImageWithLibrary">' : '';
+    const cardPadderClass = libraryLabelHtml ? 'cardPadderContent' : 'cardPadder';
+    cardImageContainerOpen = `<div class="${cardBoxClass}">${libraryImageOpen}<div class="${cardScalableClass}"><div class="${cardPadderClass} cardPadder-${shape}">${cardPadderIcon}</div>${cardImageContainerOpen}`;
     cardBoxClose = '</div>';
-    cardScalableClose = '</div>';
+    cardScalableClose = '</div>' + (libraryLabelHtml ? libraryLabelHtml + '</div>' : '');
 
     if (options.disableIndicators !== true) {
         let indicatorsHtml = '';
@@ -949,7 +956,7 @@ function buildCard(index, item, apiClient, options) {
 
     if (tagName === 'button') {
         actionAttribute = ' data-action="' + action + '"';
-        ariaLabelAttribute = ` aria-label="${escapeHtml(item.Name)}"`;
+        ariaLabelAttribute = ` aria-label="${escapeHtml(imageLabel)}"`;
     } else {
         actionAttribute = '';
     }

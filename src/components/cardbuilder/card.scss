@@ -229,7 +229,8 @@ button::-moz-focus-inner {
     background-color: transparent;
 }
 
-.cardPadder {
+.cardPadder,
+.cardPadderContent {
     position: relative; // For centering the cardImageIcon
 }
 
@@ -245,6 +246,20 @@ button::-moz-focus-inner {
 .cardContent-shadow,
 .cardBox:not(.visualCardBox) .cardPadder {
     box-shadow: 0 0.0725em 0.29em 0 rgba(0, 0, 0, 0.37);
+}
+
+.cardLibraryName {
+    display: block;
+    box-sizing: border-box;
+    padding: 0.15em 0.5em;
+    overflow: hidden;
+    border-bottom-right-radius: inherit;
+    border-bottom-left-radius: inherit;
+    font-size: 75%;
+    line-height: 1.4;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .cardImage {
@@ -391,7 +406,8 @@ button::-moz-focus-inner {
     color: inherit;
 }
 
-.cardPadder .cardImageIcon {
+.cardPadder > .cardImageIcon,
+.cardPadderContent > .cardImageIcon {
     color: #111;
     position: absolute;
     top: 50%;
@@ -845,6 +861,14 @@ button::-moz-focus-inner {
 .visualCardBox .cardOverlayContainer {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+}
+
+.cardImageWithLibrary .cardPadderContent,
+.cardImageWithLibrary .cardImageContainer,
+.cardImageWithLibrary .blurhash-canvas,
+.cardImageWithLibrary .cardOverlayContainer {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
 .cardOverlayButton-hover {

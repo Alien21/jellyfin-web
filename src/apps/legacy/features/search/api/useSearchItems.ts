@@ -14,6 +14,7 @@ import { useLiveTvSearch } from './useLiveTvSearch';
 import { fetchItemsByType } from './fetchItemsByType';
 import { useProgramsSearch } from './useProgramsSearch';
 import { LIVETV_CARD_OPTIONS } from '../constants/liveTvCardOptions';
+import { LIBRARY_INFO_FIELDS } from '../constants/queryOptions';
 
 export const useSearchItems = (
     parentId?: string,
@@ -71,6 +72,7 @@ export const useSearchItems = (
                 api!,
                 userId,
                 {
+                    fields: LIBRARY_INFO_FIELDS,
                     includeItemTypes: itemTypes,
                     parentId,
                     searchTerm,
