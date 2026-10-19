@@ -96,7 +96,7 @@ const ItemsView: FC = () => {
             shape = CardShape.Backdrop;
             preferThumb = true;
         } else {
-            shape = CardShape.Auto;
+            shape = viewType === LibraryTab.Movies ? CardShape.Portrait : CardShape.Auto;
         }
 
         const cardOptions: CardOptions = {
