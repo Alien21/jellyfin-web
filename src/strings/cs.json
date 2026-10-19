@@ -98,6 +98,8 @@
     "EnableFavoriteSyncAcrossLibrariesHelp": "Přidání nebo odebrání oblíbené položky upraví i odpovídající filmy, epizody, seriály a řady v ostatních přístupných knihovnách. Každá kopie z jiné knihovny zůstane v oblíbených jako samostatná položka.",
     "EnableAutoRemoveFavoritesAfterWatching": "Odebírat oblíbené po zhlédnutí",
     "EnableAutoRemoveFavoritesAfterWatchingHelp": "Po novém zhlédnutí nebo ručním označení jako zhlédnuté odebere položku i její kopie v ostatních knihovnách. U seriálů a řad je od přidání do oblíbených nutné zhlédnout nebo označit všechny dostupné epizody. Dřívější historie zhlédnutí oblíbené položky neodebírá.",
+    "EnableNextUpResumeThreshold": "Přidávat seriály do Dalších dílů až po dosažení minimálního procenta pro pokračování",
+    "EnableNextUpResumeThresholdHelp": "Seriál se zobrazí v Dalších dílech, až některá epizoda dosáhne aktuálního minimálního procenta pro pokračování nastaveného v Nástěnka > Přehrávání > Pokračovat. Změny tohoto procenta se projeví automaticky.",
     "EnableGlobalSearch": "Vždy hledat ve všech knihovnách",
     "EnableGlobalSearchHelp": "Tlačítko hledání prohledá všechny přístupné knihovny, i když je otevřené uvnitř knihovny. Při vypnutí zůstane hledání omezené na aktuální knihovnu.",
     "PlayVersion": "Přehrát verzi",

@@ -43,6 +43,8 @@
     "EnableFavoriteSyncAcrossLibrariesHelp": "Adding or removing a favorite also updates matching movies, episodes, series and seasons in other accessible libraries. Each library copy remains a separate item in favorites.",
     "EnableAutoRemoveFavoritesAfterWatching": "Remove favorites after watching",
     "EnableAutoRemoveFavoritesAfterWatchingHelp": "Removes an item and its matching library copies after a new playback completion or manual watched action. Series and seasons require all available episodes to be watched or marked watched since being added to favorites. Earlier watch history never removes a favorite.",
+    "EnableNextUpResumeThreshold": "Delay Next Up until the minimum resume percentage",
+    "EnableNextUpResumeThresholdHelp": "A series appears in Next Up after an episode reaches the current Minimum resume percentage set under Dashboard > Playback > Resume. Changes to that percentage apply automatically.",
     "EnableGlobalSearch": "Always search all libraries",
     "EnableGlobalSearchHelp": "The search button searches all accessible libraries, including when opened from inside a library. When disabled, search stays within the current library.",
     "PlayVersion": "Play version",

@@ -37,11 +37,13 @@ function submit(
     librarySourceDetails: boolean,
     globalSearch = false,
     favoriteSyncAcrossLibraries = false,
-    autoRemoveFavoritesAfterWatching = false
+    autoRemoveFavoritesAfterWatching = false,
+    nextUpResumeThreshold = false
 ) {
     const formData = new FormData();
     if (favoriteSyncAcrossLibraries) formData.set('EnableFavoriteSyncAcrossLibraries', 'on');
     if (autoRemoveFavoritesAfterWatching) formData.set('EnableAutoRemoveFavoritesAfterWatching', 'on');
+    if (nextUpResumeThreshold) formData.set('EnableNextUpResumeThreshold', 'on');
     if (globalSearch) formData.set('EnableGlobalSearch', 'on');
     if (playbackVersionSelection) formData.set('EnablePlaybackVersionSelection', 'on');
     if (librarySourceDetails) formData.set('EnableLibrarySourceDetails', 'on');
@@ -64,6 +66,7 @@ describe('Extensions settings save', () => {
                 ServerName: 'My server',
                 EnableFavoriteSyncAcrossLibraries: false,
                 EnableAutoRemoveFavoritesAfterWatching: false,
+                EnableNextUpResumeThreshold: false,
                 EnableGlobalSearch: false,
                 EnableLibrarySourceDetails: true,
                 EnablePlaybackVersionSelection: enabled
@@ -82,6 +85,7 @@ describe('Extensions settings save', () => {
                 ServerName: 'My server',
                 EnableFavoriteSyncAcrossLibraries: false,
                 EnableAutoRemoveFavoritesAfterWatching: false,
+                EnableNextUpResumeThreshold: false,
                 EnableGlobalSearch: enabled,
                 EnableLibrarySourceDetails: true,
                 EnablePlaybackVersionSelection: false
@@ -115,7 +119,34 @@ describe('Extensions settings save', () => {
                 EnableLibrarySourceDetails: true,
                 EnablePlaybackVersionSelection: false,
                 EnableFavoriteSyncAcrossLibraries: sync,
-                EnableAutoRemoveFavoritesAfterWatching: autoRemove
+                EnableAutoRemoveFavoritesAfterWatching: autoRemove,
+                EnableNextUpResumeThreshold: false
+            }
+        });
+        expect(mocks.invalidateQueries).toHaveBeenCalledOnce();
+    });
+
+    test.each([true, false])('persists the Next Up resume threshold as %s and preserves the current resume percentage', async enabled => {
+        mocks.getConfiguration.mockResolvedValue({
+            data: {
+                ServerName: 'My server',
+                MinResumePct: 2,
+                EnableNextUpResumeThreshold: !enabled
+            }
+        });
+
+        await expect(submit(true, true, true, true, true, enabled)).resolves.toEqual({ isSaved: true });
+
+        expect(mocks.updateConfiguration).toHaveBeenCalledWith({
+            serverConfiguration: {
+                ServerName: 'My server',
+                MinResumePct: 2,
+                EnableGlobalSearch: true,
+                EnableLibrarySourceDetails: true,
+                EnablePlaybackVersionSelection: true,
+                EnableFavoriteSyncAcrossLibraries: true,
+                EnableAutoRemoveFavoritesAfterWatching: true,
+                EnableNextUpResumeThreshold: enabled
             }
         });
         expect(mocks.invalidateQueries).toHaveBeenCalledOnce();

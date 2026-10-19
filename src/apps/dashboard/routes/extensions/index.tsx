@@ -28,6 +28,7 @@ type ExtensionsConfiguration = ServerConfiguration & {
     EnablePlaybackVersionSelection?: boolean;
     EnableFavoriteSyncAcrossLibraries?: boolean;
     EnableAutoRemoveFavoritesAfterWatching?: boolean;
+    EnableNextUpResumeThreshold?: boolean;
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -45,6 +46,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     config.EnablePlaybackVersionSelection = playbackVersionSelectionEnabled;
     config.EnableFavoriteSyncAcrossLibraries = formData.get('EnableFavoriteSyncAcrossLibraries')?.toString() === 'on';
     config.EnableAutoRemoveFavoritesAfterWatching = formData.get('EnableAutoRemoveFavoritesAfterWatching')?.toString() === 'on';
+    config.EnableNextUpResumeThreshold = formData.get('EnableNextUpResumeThreshold')?.toString() === 'on';
 
     await getSystemApi(api).updateConfiguration({ serverConfiguration: config });
     setGlobalSearchEnabled(globalSearchEnabled);
@@ -172,6 +174,24 @@ export const Component = () => {
                                 />
                                 <FormHelperText id='autoRemoveFavoritesAfterWatchingHelp'>
                                     {globalize.translate('EnableAutoRemoveFavoritesAfterWatchingHelp')}
+                                </FormHelperText>
+                            </FormControl>
+
+                            <FormControl disabled={isSubmitting}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            name='EnableNextUpResumeThreshold'
+                                            defaultChecked={config?.EnableNextUpResumeThreshold ?? false}
+                                            slotProps={{
+                                                input: { 'aria-describedby': 'nextUpResumeThresholdHelp' }
+                                            }}
+                                        />
+                                    }
+                                    label={globalize.translate('EnableNextUpResumeThreshold')}
+                                />
+                                <FormHelperText id='nextUpResumeThresholdHelp'>
+                                    {globalize.translate('EnableNextUpResumeThresholdHelp')}
                                 </FormHelperText>
                             </FormControl>
 
