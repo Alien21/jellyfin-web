@@ -293,7 +293,7 @@ declare module 'jellyfin-apiclient' {
         updatePluginSecurityInfo(info: PluginSecurityInfo): Promise<void>;
         updateScheduledTaskTriggers(id: string, triggers: TaskTriggerInfo[]): Promise<void>;
         updateServerConfiguration(configuration: ServerConfiguration): Promise<void>;
-        serverInfo(): { Id?: string; EnableLibrarySourceDetails?: boolean; [key: string]: unknown } | undefined;
+        serverInfo(): { Id?: string; EnableLibrarySourceDetails?: boolean; EnablePlaybackVersionSelection?: boolean; [key: string]: unknown } | undefined;
         updateServerInfo(server: any, serverUrl: string): void;
         updateUserConfiguration(userId: string, configuration: UserConfiguration): Promise<void>;
         updateUserItemRating(userId: string, itemId: string, likes: boolean): Promise<UserItemDataDto>;

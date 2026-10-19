@@ -145,9 +145,9 @@ function onPlay({ Data }, apiClient) {
     notifyApp();
     const serverId = apiClient.serverInfo().Id;
     if (Data.PlayCommand === 'PlayNext') {
-        playbackManager.queueNext({ ids: Data.ItemIds, serverId });
+        playbackManager.queueNext({ ids: Data.ItemIds, serverId, skipVersionSelection: true });
     } else if (Data.PlayCommand === 'PlayLast') {
-        playbackManager.queue({ ids: Data.ItemIds, serverId });
+        playbackManager.queue({ ids: Data.ItemIds, serverId, skipVersionSelection: true });
     } else {
         playbackManager.play({
             ids: Data.ItemIds,
@@ -156,6 +156,7 @@ function onPlay({ Data }, apiClient) {
             audioStreamIndex: Data.AudioStreamIndex,
             subtitleStreamIndex: Data.SubtitleStreamIndex,
             startIndex: Data.StartIndex,
+            skipVersionSelection: true,
             serverId
         });
     }

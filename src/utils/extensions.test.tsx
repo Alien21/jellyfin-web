@@ -7,7 +7,7 @@ import SearchResultsRow from 'apps/legacy/features/search/components/SearchResul
 import { loadResume } from 'components/homesections/sections/resume';
 import type { SectionContainerElement } from 'components/homesections/sections/section';
 import type { UserSettings } from 'scripts/settings/userSettings';
-import { isLibrarySourceDetailsEnabled, setLibrarySourceDetailsEnabled } from './extensions';
+import { isLibrarySourceDetailsEnabled, isPlaybackVersionSelectionEnabled, setLibrarySourceDetailsEnabled, setPlaybackVersionSelectionEnabled } from './extensions';
 
 const mocks = vi.hoisted(() => ({
     currentApiClient: vi.fn(),
@@ -46,7 +46,7 @@ vi.mock('lib/globalize', () => ({ default: { translate: (key: string) => key } }
 vi.mock('elements/emby-scroller/emby-scroller', () => ({}));
 vi.mock('elements/emby-itemscontainer/emby-itemscontainer', () => ({}));
 
-type ServerInfo = { Id: string; EnableLibrarySourceDetails?: boolean };
+type ServerInfo = { Id: string; EnableLibrarySourceDetails?: boolean; EnablePlaybackVersionSelection?: boolean };
 
 function createClient(id: string, enabled?: boolean) {
     let info: ServerInfo = { Id: id, EnableLibrarySourceDetails: enabled };
@@ -151,6 +151,55 @@ describe('library source details server capability', () => {
         expect(mocks.getApiClient).not.toHaveBeenCalled();
         expect(currentClient.updateServerInfo).not.toHaveBeenCalled();
         expect(otherClient.updateServerInfo).not.toHaveBeenCalled();
+    });
+});
+
+describe('playback version selection server capability', () => {
+    test('defaults to disabled on an older server or without a connection', () => {
+        expect(isPlaybackVersionSelectionEnabled()).toBe(false);
+        mocks.currentApiClient.mockReturnValue(undefined);
+        expect(isPlaybackVersionSelectionEnabled()).toBe(false);
+    });
+
+    test.each([undefined, null])('uses the current client when the server ID is %s', serverId => {
+        currentClient.serverInfo({ Id: 'current', EnablePlaybackVersionSelection: true });
+
+        expect(isPlaybackVersionSelectionEnabled(serverId)).toBe(true);
+        expect(mocks.getApiClient).not.toHaveBeenCalled();
+    });
+
+    test('uses only the requested server capability', () => {
+        otherClient.serverInfo({ Id: 'other', EnablePlaybackVersionSelection: true });
+
+        expect(isPlaybackVersionSelectionEnabled('other')).toBe(true);
+        expect(isPlaybackVersionSelectionEnabled('current')).toBe(false);
+        expect(isPlaybackVersionSelectionEnabled('missing')).toBe(false);
+        expect(mocks.currentApiClient).not.toHaveBeenCalled();
+    });
+
+    test('applies and persists the saved capability without changing other settings or servers', () => {
+        currentClient.serverInfo({ Id: 'current', EnableLibrarySourceDetails: true });
+
+        setPlaybackVersionSelectionEnabled(true);
+
+        expect(isPlaybackVersionSelectionEnabled()).toBe(true);
+        expect(isLibrarySourceDetailsEnabled()).toBe(true);
+        expect(currentClient.updateServerInfo).toHaveBeenLastCalledWith(
+            { Id: 'current', EnableLibrarySourceDetails: true, EnablePlaybackVersionSelection: true },
+            'https://current.example'
+        );
+
+        setPlaybackVersionSelectionEnabled(false);
+
+        expect(isPlaybackVersionSelectionEnabled()).toBe(false);
+        expect(otherClient.updateServerInfo).not.toHaveBeenCalled();
+    });
+
+    test('does not save settings without a current connection', () => {
+        mocks.currentApiClient.mockReturnValue(undefined);
+
+        expect(() => setPlaybackVersionSelectionEnabled(true)).not.toThrow();
+        expect(currentClient.updateServerInfo).not.toHaveBeenCalled();
     });
 });
 

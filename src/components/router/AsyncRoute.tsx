@@ -15,13 +15,14 @@ export interface AsyncRoute {
 }
 
 const importRoute = (page: string, type: AppType) => {
+    // These recursive contexts also see colocated tests, which must stay out of browser bundles.
     switch (type) {
         case AppType.Dashboard:
-            return import(/* webpackChunkName: "[request]" */ `../../apps/dashboard/routes/${page}`);
+            return import(/* webpackChunkName: "[request]", webpackExclude: /\.(test|spec)\.[cm]?[jt]sx?$/ */ `../../apps/dashboard/routes/${page}`);
         case AppType.Modern:
-            return import(/* webpackChunkName: "[request]" */ `../../apps/modern/routes/${page}`);
+            return import(/* webpackChunkName: "[request]", webpackExclude: /\.(test|spec)\.[cm]?[jt]sx?$/ */ `../../apps/modern/routes/${page}`);
         case AppType.Legacy:
-            return import(/* webpackChunkName: "[request]" */ `../../apps/legacy/routes/${page}`);
+            return import(/* webpackChunkName: "[request]", webpackExclude: /\.(test|spec)\.[cm]?[jt]sx?$/ */ `../../apps/legacy/routes/${page}`);
     }
 };
 

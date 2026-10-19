@@ -36,6 +36,7 @@ import { MediaError } from 'types/mediaError';
 import { getMediaError } from 'utils/mediaError';
 import { bindSkipSegment } from './skipsegment.ts';
 import * as bitrateTest from 'utils/bitrateTest';
+import { selectPlaybackVersion } from './versionSelection';
 
 const UNLIMITED_ITEMS = -1;
 
@@ -2143,6 +2144,19 @@ export class PlaybackManager {
 
             // Prepare the list of items
             items = await translateItemsForPlayback(items, options);
+            // Ask for the resolved movie/episode before queuing that version's additional parts.
+            // Automatic episode changes use playInternal directly and keep the current version.
+            const canContinue = self.syncPlayEnabled || await selectPlaybackVersion(items, options).catch(error => {
+                loading.hide();
+                throw error;
+            });
+            if (!canContinue) {
+                loading.hide();
+                return;
+            }
+            if (options.fullscreen) {
+                loading.show();
+            }
             // Add any additional parts for movies or episodes
             items = await getAdditionalParts(items, options.mediaSourceId, options.startIndex || 0);
             // Adjust the start index for additional parts added to the queue

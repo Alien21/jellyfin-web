@@ -18,11 +18,12 @@ import { useConfiguration } from 'hooks/useConfiguration';
 import globalize from 'lib/globalize';
 import { ServerConnections } from 'lib/jellyfin-apiclient';
 import type { ActionData } from 'types/actionData';
-import { setLibrarySourceDetailsEnabled } from 'utils/extensions';
+import { setLibrarySourceDetailsEnabled, setPlaybackVersionSelectionEnabled } from 'utils/extensions';
 import { queryClient } from 'utils/query/queryClient';
 
 type ExtensionsConfiguration = ServerConfiguration & {
     EnableLibrarySourceDetails?: boolean;
+    EnablePlaybackVersionSelection?: boolean;
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -34,9 +35,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData();
     const enabled = formData.get('EnableLibrarySourceDetails')?.toString() === 'on';
     config.EnableLibrarySourceDetails = enabled;
+    const playbackVersionSelectionEnabled = formData.get('EnablePlaybackVersionSelection')?.toString() === 'on';
+    config.EnablePlaybackVersionSelection = playbackVersionSelectionEnabled;
 
     await getSystemApi(api).updateConfiguration({ serverConfiguration: config });
     setLibrarySourceDetailsEnabled(enabled);
+    setPlaybackVersionSelectionEnabled(playbackVersionSelectionEnabled);
     void queryClient.invalidateQueries();
 
     return { isSaved: true };
@@ -86,6 +90,24 @@ export const Component = () => {
                                 />
                                 <FormHelperText id='librarySourceDetailsHelp'>
                                     {globalize.translate('EnableLibrarySourceDetailsHelp')}
+                                </FormHelperText>
+                            </FormControl>
+
+                            <FormControl disabled={isSubmitting}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            name='EnablePlaybackVersionSelection'
+                                            defaultChecked={config?.EnablePlaybackVersionSelection ?? false}
+                                            slotProps={{
+                                                input: { 'aria-describedby': 'playbackVersionSelectionHelp' }
+                                            }}
+                                        />
+                                    }
+                                    label={globalize.translate('EnablePlaybackVersionSelection')}
+                                />
+                                <FormHelperText id='playbackVersionSelectionHelp'>
+                                    {globalize.translate('EnablePlaybackVersionSelectionHelp')}
                                 </FormHelperText>
                             </FormControl>
 

@@ -19,3 +19,23 @@ export function setLibrarySourceDetailsEnabled(enabled: boolean): void {
         apiClient.updateServerInfo(serverInfo, apiClient.serverAddress());
     }
 }
+
+/** Older servers do not advertise this optional playback behavior. */
+export function isPlaybackVersionSelectionEnabled(serverId?: string | null): boolean {
+    const apiClient = serverId ?
+        ServerConnections.getApiClient(serverId) :
+        ServerConnections.currentApiClient();
+    return apiClient?.serverInfo()?.EnablePlaybackVersionSelection === true;
+}
+
+/** Apply the saved server setting immediately to subsequent playback requests. */
+export function setPlaybackVersionSelectionEnabled(enabled: boolean): void {
+    const apiClient = ServerConnections.currentApiClient();
+    if (!apiClient) return;
+
+    const serverInfo = apiClient.serverInfo();
+    if (serverInfo) {
+        serverInfo.EnablePlaybackVersionSelection = enabled;
+        apiClient.updateServerInfo(serverInfo, apiClient.serverAddress());
+    }
+}

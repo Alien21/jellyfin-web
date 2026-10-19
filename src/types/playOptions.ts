@@ -17,6 +17,8 @@ export interface PlayOptions {
     startIndex?: number
     /** The position to start playing from */
     startPositionTicks?: number
+    /** Whether a launch already requested by another device should bypass version selection */
+    skipVersionSelection?: boolean
     /** The index of the subtitle stream to play */
     subtitleStreamIndex?: number
 }
