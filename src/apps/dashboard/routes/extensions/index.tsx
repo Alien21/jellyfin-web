@@ -27,6 +27,7 @@ type ExtensionsConfiguration = ServerConfiguration & {
     EnableLibrarySourceDetails?: boolean;
     EnablePlaybackVersionSelection?: boolean;
     EnableFavoriteSyncAcrossLibraries?: boolean;
+    EnableAutoRemoveFavoritesAfterWatching?: boolean;
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -43,6 +44,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const playbackVersionSelectionEnabled = formData.get('EnablePlaybackVersionSelection')?.toString() === 'on';
     config.EnablePlaybackVersionSelection = playbackVersionSelectionEnabled;
     config.EnableFavoriteSyncAcrossLibraries = formData.get('EnableFavoriteSyncAcrossLibraries')?.toString() === 'on';
+    config.EnableAutoRemoveFavoritesAfterWatching = formData.get('EnableAutoRemoveFavoritesAfterWatching')?.toString() === 'on';
 
     await getSystemApi(api).updateConfiguration({ serverConfiguration: config });
     setGlobalSearchEnabled(globalSearchEnabled);
@@ -152,6 +154,24 @@ export const Component = () => {
                                 />
                                 <FormHelperText id='favoriteSyncAcrossLibrariesHelp'>
                                     {globalize.translate('EnableFavoriteSyncAcrossLibrariesHelp')}
+                                </FormHelperText>
+                            </FormControl>
+
+                            <FormControl disabled={isSubmitting}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            name='EnableAutoRemoveFavoritesAfterWatching'
+                                            defaultChecked={config?.EnableAutoRemoveFavoritesAfterWatching ?? false}
+                                            slotProps={{
+                                                input: { 'aria-describedby': 'autoRemoveFavoritesAfterWatchingHelp' }
+                                            }}
+                                        />
+                                    }
+                                    label={globalize.translate('EnableAutoRemoveFavoritesAfterWatching')}
+                                />
+                                <FormHelperText id='autoRemoveFavoritesAfterWatchingHelp'>
+                                    {globalize.translate('EnableAutoRemoveFavoritesAfterWatchingHelp')}
                                 </FormHelperText>
                             </FormControl>
 

@@ -41,6 +41,8 @@
     "EnableLibrarySourceDetailsHelp": "Shows library names for items in shared views and counts each movie once in collections. Refresh already open pages after changing this setting.",
     "EnableFavoriteSyncAcrossLibraries": "Synchronize favorites across libraries",
     "EnableFavoriteSyncAcrossLibrariesHelp": "Adding or removing a favorite also updates matching movies, episodes, series and seasons in other accessible libraries. Each library copy remains a separate item in favorites.",
+    "EnableAutoRemoveFavoritesAfterWatching": "Remove favorites after watching",
+    "EnableAutoRemoveFavoritesAfterWatchingHelp": "Removes an item and its matching library copies after a new playback completion or manual watched action. Series and seasons require all available episodes to be watched or marked watched since being added to favorites. Earlier watch history never removes a favorite.",
     "EnablePlaybackVersionSelection": "Choose a version before playback",
     "EnablePlaybackVersionSelectionHelp": "Shows a version chooser before playback in computer and mobile layouts when multiple versions are available. Continue watching resumes without this prompt.",
     "Extensions": "Extensions",

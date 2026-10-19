@@ -36,10 +36,12 @@ function submit(
     playbackVersionSelection: boolean,
     librarySourceDetails: boolean,
     globalSearch = false,
-    favoriteSyncAcrossLibraries = false
+    favoriteSyncAcrossLibraries = false,
+    autoRemoveFavoritesAfterWatching = false
 ) {
     const formData = new FormData();
     if (favoriteSyncAcrossLibraries) formData.set('EnableFavoriteSyncAcrossLibraries', 'on');
+    if (autoRemoveFavoritesAfterWatching) formData.set('EnableAutoRemoveFavoritesAfterWatching', 'on');
     if (globalSearch) formData.set('EnableGlobalSearch', 'on');
     if (playbackVersionSelection) formData.set('EnablePlaybackVersionSelection', 'on');
     if (librarySourceDetails) formData.set('EnableLibrarySourceDetails', 'on');
@@ -61,6 +63,7 @@ describe('Extensions settings save', () => {
             serverConfiguration: {
                 ServerName: 'My server',
                 EnableFavoriteSyncAcrossLibraries: false,
+                EnableAutoRemoveFavoritesAfterWatching: false,
                 EnableGlobalSearch: false,
                 EnableLibrarySourceDetails: true,
                 EnablePlaybackVersionSelection: enabled
@@ -78,6 +81,7 @@ describe('Extensions settings save', () => {
             serverConfiguration: {
                 ServerName: 'My server',
                 EnableFavoriteSyncAcrossLibraries: false,
+                EnableAutoRemoveFavoritesAfterWatching: false,
                 EnableGlobalSearch: enabled,
                 EnableLibrarySourceDetails: true,
                 EnablePlaybackVersionSelection: false
@@ -88,15 +92,21 @@ describe('Extensions settings save', () => {
             .toBeLessThan(mocks.setGlobalSearchEnabled.mock.invocationCallOrder[0]);
     });
 
-    test.each([true, false])('persists favorite synchronization as %s without replacing unrelated configuration', async enabled => {
+    test.each([
+        [false, false],
+        [true, false],
+        [false, true],
+        [true, true]
+    ])('persists favorite synchronization %s and automatic removal %s independently', async (sync, autoRemove) => {
         mocks.getConfiguration.mockResolvedValue({
             data: {
                 ServerName: 'My server',
-                EnableFavoriteSyncAcrossLibraries: !enabled
+                EnableFavoriteSyncAcrossLibraries: !sync,
+                EnableAutoRemoveFavoritesAfterWatching: !autoRemove
             }
         });
 
-        await expect(submit(false, true, false, enabled)).resolves.toEqual({ isSaved: true });
+        await expect(submit(false, true, false, sync, autoRemove)).resolves.toEqual({ isSaved: true });
 
         expect(mocks.updateConfiguration).toHaveBeenCalledWith({
             serverConfiguration: {
@@ -104,7 +114,8 @@ describe('Extensions settings save', () => {
                 EnableGlobalSearch: false,
                 EnableLibrarySourceDetails: true,
                 EnablePlaybackVersionSelection: false,
-                EnableFavoriteSyncAcrossLibraries: enabled
+                EnableFavoriteSyncAcrossLibraries: sync,
+                EnableAutoRemoveFavoritesAfterWatching: autoRemove
             }
         });
         expect(mocks.invalidateQueries).toHaveBeenCalledOnce();

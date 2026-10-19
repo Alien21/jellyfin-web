@@ -96,6 +96,8 @@
     "EnableLibrarySourceDetailsHelp": "Zobrazí názvy knihoven u položek ve společných přehledech a započítá každý film v kolekci jen jednou. Po změně obnovte již otevřené stránky.",
     "EnableFavoriteSyncAcrossLibraries": "Synchronizovat oblíbené mezi knihovnami",
     "EnableFavoriteSyncAcrossLibrariesHelp": "Přidání nebo odebrání oblíbené položky upraví i odpovídající filmy, epizody, seriály a řady v ostatních přístupných knihovnách. Každá kopie z jiné knihovny zůstane v oblíbených jako samostatná položka.",
+    "EnableAutoRemoveFavoritesAfterWatching": "Odebírat oblíbené po zhlédnutí",
+    "EnableAutoRemoveFavoritesAfterWatchingHelp": "Po novém zhlédnutí nebo ručním označení jako zhlédnuté odebere položku i její kopie v ostatních knihovnách. U seriálů a řad je od přidání do oblíbených nutné zhlédnout nebo označit všechny dostupné epizody. Dřívější historie zhlédnutí oblíbené položky neodebírá.",
     "EnableGlobalSearch": "Vždy hledat ve všech knihovnách",
     "EnableGlobalSearchHelp": "Tlačítko hledání prohledá všechny přístupné knihovny, i když je otevřené uvnitř knihovny. Při vypnutí zůstane hledání omezené na aktuální knihovnu.",
     "PlayVersion": "Přehrát verzi",
