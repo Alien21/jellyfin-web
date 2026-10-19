@@ -1945,5 +1945,7 @@
     "HlsAudioSeekStrategy": "Strategija, kurią reikia naudoti ieškant HLS srautuose.",
     "LabelHlsAudioSeekStrategy": "Garso paieškos strategija.",
     "MessageForgotPasswordRedirect": "Buvote nukreipti pas išorinį teikėją slaptažodžio nustatymui iš naujo.",
-    "MessageItemMetadataLocked": "Šio elemento metaduomenys užrakinti. Prieš naudodami identifikavimo funkciją, juos atrakinkite."
+    "MessageItemMetadataLocked": "Šio elemento metaduomenys užrakinti. Prieš naudodami identifikavimo funkciją, juos atrakinkite.",
+    "TrackHearingImpaired": "Su klausos sutrikimais",
+    "MediaInfoOriginal": "Originalus"
 }

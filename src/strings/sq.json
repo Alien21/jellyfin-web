@@ -765,5 +765,7 @@
     "LabelDeathDate": "Data e vdekjes",
     "LabelDefaultScreen": "Ekrani i parazgjedhur",
     "LabelDeinterlaceMethod": "Metoda e çthurjes",
-    "LabelDelimiterWhitelist": "Lista e lejuar e ndarësve"
+    "LabelDelimiterWhitelist": "Lista e lejuar e ndarësve",
+    "TrackHearingImpaired": "Dëgjimi i dëmtuar",
+    "MediaInfoOriginal": "Origjinal"
 }

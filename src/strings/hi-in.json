@@ -256,5 +256,7 @@
     "ConfirmDeleteCollection": "क्या आप वाकई इस कलेक्शन को डिलीट करना चाहते हैं?",
     "ConfirmDeletePlaylist": "क्या आप वाकई इस प्लेलिस्ट को डिलीट करना चाहते हैं?",
     "ConfirmSplitMedia": "क्या आप वाकई मीडिया सोर्स को अलग-अलग आइटम में बांटना चाहते हैं?",
-    "ConfirmStillWatching": "क्या आप अभी भी देख रहे हैं?"
+    "ConfirmStillWatching": "क्या आप अभी भी देख रहे हैं?",
+    "TrackHearingImpaired": "मूक बधिर",
+    "MediaInfoOriginal": "असली"
 }

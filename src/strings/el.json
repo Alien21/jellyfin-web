@@ -1945,5 +1945,7 @@
     "Screenplay": "Σενάριο",
     "HlsAudioSeekStrategy": "Η στρατηγική που χρησιμοποιείται κατά την αναζήτηση σε ροές HLS.",
     "LabelHlsAudioSeekStrategy": "Στρατηγική αναζήτησης ήχου.",
-    "MessageForgotPasswordRedirect": "Έχετε ανακατευθυνθεί σε εξωτερικό πάροχο για την επαναφορά του κωδικού πρόσβασης."
+    "MessageForgotPasswordRedirect": "Έχετε ανακατευθυνθεί σε εξωτερικό πάροχο για την επαναφορά του κωδικού πρόσβασης.",
+    "TrackHearingImpaired": "Με προβλήματα ακοής",
+    "MediaInfoOriginal": "Πρωτότυπο"
 }

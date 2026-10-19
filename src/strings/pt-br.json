@@ -1945,5 +1945,7 @@
     "BitmapSubtitleAspectModeContain": "Conter",
     "ViewDoublePage": "Visualização em página dupla",
     "ViewSinglePage": "Visualização em página única",
-    "Novel": "Romance"
+    "Novel": "Romance",
+    "TrackHearingImpaired": "Deficiência Auditiva",
+    "MediaInfoOriginal": "Original"
 }

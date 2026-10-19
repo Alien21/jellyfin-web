@@ -19,13 +19,15 @@ import { useConfiguration } from 'hooks/useConfiguration';
 import globalize from 'lib/globalize';
 import { ServerConnections } from 'lib/jellyfin-apiclient';
 import type { ActionData } from 'types/actionData';
-import { setGlobalSearchEnabled, setLibrarySourceDetailsEnabled, setPlaybackVersionSelectionEnabled } from 'utils/extensions';
+import { setEnhancedAudioSelectionEnabled, setEnhancedSubtitleSelectionEnabled, setGlobalSearchEnabled, setLibrarySourceDetailsEnabled, setPlaybackVersionSelectionEnabled } from 'utils/extensions';
 import { queryClient } from 'utils/query/queryClient';
 
 type ExtensionsConfiguration = ServerConfiguration & {
     EnableGlobalSearch?: boolean;
     EnableLibrarySourceDetails?: boolean;
     EnablePlaybackVersionSelection?: boolean;
+    EnableEnhancedSubtitleSelection?: boolean;
+    EnableEnhancedAudioSelection?: boolean;
     EnableFavoriteSyncAcrossLibraries?: boolean;
     EnableAutoRemoveFavoritesAfterWatching?: boolean;
     EnableNextUpResumeThreshold?: boolean;
@@ -44,6 +46,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     config.EnableLibrarySourceDetails = enabled;
     const playbackVersionSelectionEnabled = formData.get('EnablePlaybackVersionSelection')?.toString() === 'on';
     config.EnablePlaybackVersionSelection = playbackVersionSelectionEnabled;
+    const enhancedSubtitleSelectionEnabled = formData.get('EnableEnhancedSubtitleSelection')?.toString() === 'on';
+    config.EnableEnhancedSubtitleSelection = enhancedSubtitleSelectionEnabled;
+    const enhancedAudioSelectionEnabled = formData.get('EnableEnhancedAudioSelection')?.toString() === 'on';
+    config.EnableEnhancedAudioSelection = enhancedAudioSelectionEnabled;
     config.EnableFavoriteSyncAcrossLibraries = formData.get('EnableFavoriteSyncAcrossLibraries')?.toString() === 'on';
     config.EnableAutoRemoveFavoritesAfterWatching = formData.get('EnableAutoRemoveFavoritesAfterWatching')?.toString() === 'on';
     config.EnableNextUpResumeThreshold = formData.get('EnableNextUpResumeThreshold')?.toString() === 'on';
@@ -52,6 +58,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     setGlobalSearchEnabled(globalSearchEnabled);
     setLibrarySourceDetailsEnabled(enabled);
     setPlaybackVersionSelectionEnabled(playbackVersionSelectionEnabled);
+    setEnhancedSubtitleSelectionEnabled(enhancedSubtitleSelectionEnabled);
+    setEnhancedAudioSelectionEnabled(enhancedAudioSelectionEnabled);
     void queryClient.invalidateQueries();
 
     return { isSaved: true };
@@ -120,6 +128,42 @@ export const Component = () => {
                                 />
                                 <FormHelperText id='playbackVersionSelectionHelp'>
                                     {globalize.translate('EnablePlaybackVersionSelectionHelp')}
+                                </FormHelperText>
+                            </FormControl>
+
+                            <FormControl disabled={isSubmitting}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            name='EnableEnhancedSubtitleSelection'
+                                            defaultChecked={config?.EnableEnhancedSubtitleSelection ?? false}
+                                            slotProps={{
+                                                input: { 'aria-describedby': 'subtitleSelectionHelp' }
+                                            }}
+                                        />
+                                    }
+                                    label={globalize.translate('EnableEnhancedSubtitleSelection')}
+                                />
+                                <FormHelperText id='subtitleSelectionHelp'>
+                                    {globalize.translate('EnableEnhancedSubtitleSelectionHelp')}
+                                </FormHelperText>
+                            </FormControl>
+
+                            <FormControl disabled={isSubmitting}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            name='EnableEnhancedAudioSelection'
+                                            defaultChecked={config?.EnableEnhancedAudioSelection ?? false}
+                                            slotProps={{
+                                                input: { 'aria-describedby': 'audioSelectionHelp' }
+                                            }}
+                                        />
+                                    }
+                                    label={globalize.translate('EnableEnhancedAudioSelection')}
+                                />
+                                <FormHelperText id='audioSelectionHelp'>
+                                    {globalize.translate('EnableEnhancedAudioSelectionHelp')}
                                 </FormHelperText>
                             </FormControl>
 

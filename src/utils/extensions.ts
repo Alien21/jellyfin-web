@@ -59,3 +59,43 @@ export function setPlaybackVersionSelectionEnabled(enabled: boolean): void {
         apiClient.updateServerInfo(serverInfo, apiClient.serverAddress());
     }
 }
+
+/** Older servers retain their existing subtitle track labels. */
+export function isEnhancedSubtitleSelectionEnabled(serverId?: string | null): boolean {
+    const apiClient = serverId ?
+        ServerConnections.getApiClient(serverId) :
+        ServerConnections.currentApiClient();
+    return apiClient?.serverInfo()?.EnableEnhancedSubtitleSelection === true;
+}
+
+/** Apply saved subtitle selection behavior to the current connection immediately. */
+export function setEnhancedSubtitleSelectionEnabled(enabled: boolean): void {
+    const apiClient = ServerConnections.currentApiClient();
+    if (!apiClient) return;
+
+    const serverInfo = apiClient.serverInfo();
+    if (serverInfo) {
+        serverInfo.EnableEnhancedSubtitleSelection = enabled;
+        apiClient.updateServerInfo(serverInfo, apiClient.serverAddress());
+    }
+}
+
+/** Older servers retain their existing audio track labels. */
+export function isEnhancedAudioSelectionEnabled(serverId?: string | null): boolean {
+    const apiClient = serverId ?
+        ServerConnections.getApiClient(serverId) :
+        ServerConnections.currentApiClient();
+    return apiClient?.serverInfo()?.EnableEnhancedAudioSelection === true;
+}
+
+/** Apply saved audio selection behavior to the current connection immediately. */
+export function setEnhancedAudioSelectionEnabled(enabled: boolean): void {
+    const apiClient = ServerConnections.currentApiClient();
+    if (!apiClient) return;
+
+    const serverInfo = apiClient.serverInfo();
+    if (serverInfo) {
+        serverInfo.EnableEnhancedAudioSelection = enabled;
+        apiClient.updateServerInfo(serverInfo, apiClient.serverAddress());
+    }
+}

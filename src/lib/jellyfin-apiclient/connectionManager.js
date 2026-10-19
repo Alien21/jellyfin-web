@@ -21,6 +21,8 @@ function updateServerInfo(server, systemInfo) {
     server.EnableGlobalSearch = systemInfo.EnableGlobalSearch === true;
     server.EnableLibrarySourceDetails = systemInfo.EnableLibrarySourceDetails === true;
     server.EnablePlaybackVersionSelection = systemInfo.EnablePlaybackVersionSelection === true;
+    server.EnableEnhancedSubtitleSelection = systemInfo.EnableEnhancedSubtitleSelection === true;
+    server.EnableEnhancedAudioSelection = systemInfo.EnableEnhancedAudioSelection === true;
 
     if (systemInfo.Id) {
         server.Id = systemInfo.Id;

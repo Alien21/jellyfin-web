@@ -375,5 +375,7 @@
     "Creator": "ผู้สร้าง",
     "DeleteUser": "ลบผู้ใช้",
     "DeleteUserConfirmation": "คุณแน่ใจที่จะลบผู้ใช้นี้รึเปล่า?",
-    "DeleteServerConfirmation": "คุณแน่ใจที่จะลบเซิร์ฟเวอร์นี้รึเปล่า?"
+    "DeleteServerConfirmation": "คุณแน่ใจที่จะลบเซิร์ฟเวอร์นี้รึเปล่า?",
+    "TrackHearingImpaired": "บกพร่องทางการได้ยิน",
+    "MediaInfoOriginal": "ต้นฉบับ"
 }

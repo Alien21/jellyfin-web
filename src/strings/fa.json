@@ -1482,5 +1482,7 @@
     "LabelBackupsUnavailable": "پشتیبان گیری موجود نمی‌باشد",
     "DeleteRepositoryConfirmation": "آیا مطمئن هستید که می‌خواهید این بخش را حذف کنید؟",
     "MessageBackupInProgress": "در حال پشتیبان گیری",
-    "MessageItemMetadataLocked": "ابرداده‌های این مورد قفل شده‌اند. پیش از استفاده از قابلیت شناسایی، قفل آن‌ها را باز کنید."
+    "MessageItemMetadataLocked": "ابرداده‌های این مورد قفل شده‌اند. پیش از استفاده از قابلیت شناسایی، قفل آن‌ها را باز کنید.",
+    "TrackHearingImpaired": "مشکل شنوایی",
+    "MediaInfoOriginal": "اصلی"
 }

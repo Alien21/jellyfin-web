@@ -1945,5 +1945,7 @@
     "HlsAudioSeekStrategy": "D'Strategie, déi beim Sichen an HLS-Streams benotzt gëtt.",
     "LabelHlsAudioSeekStrategy": "Audio-Sichstrategie.",
     "MessageForgotPasswordRedirect": "Dir sidd fir d'Passwuertzerécksetzung un en externen Ubidder weidergeleet ginn.",
-    "MessageItemMetadataLocked": "D'Metadate vun dësem Element si gespaart. Späert se op, éier Dir d'Identifikatiounsfunktioun benotzt."
+    "MessageItemMetadataLocked": "D'Metadate vun dësem Element si gespaart. Späert se op, éier Dir d'Identifikatiounsfunktioun benotzt.",
+    "TrackHearingImpaired": "Daaf",
+    "MediaInfoOriginal": "Original"
 }

@@ -1945,5 +1945,7 @@
     "HlsAudioSeekStrategy": "An straitéis le húsáid agus tú ag cuardach i sruthanna HLS.",
     "LabelHlsAudioSeekStrategy": "Straitéis cuardaigh fuaime.",
     "MessageForgotPasswordRedirect": "Atreoraíodh thú chuig soláthraí seachtrach chun an focal faire a athshocrú.",
-    "MessageItemMetadataLocked": "Tá meiteashonraí na míre seo faoi ghlas. Díghlasáil iad sula n-úsáideann tú an ghné aitheantais."
+    "MessageItemMetadataLocked": "Tá meiteashonraí na míre seo faoi ghlas. Díghlasáil iad sula n-úsáideann tú an ghné aitheantais.",
+    "TrackHearingImpaired": "Lag éisteachta",
+    "MediaInfoOriginal": "Bunaidh"
 }

@@ -756,5 +756,7 @@
     "ViewSettings": "सेटिंग पाहा",
     "LabelPlaybackInfo": "प्लेबॅक माहिती",
     "Select": "निवडा",
-    "Unknown": "अज्ञात"
+    "Unknown": "अज्ञात",
+    "TrackHearingImpaired": "कर्णबधीर",
+    "MediaInfoOriginal": "मूळ"
 }

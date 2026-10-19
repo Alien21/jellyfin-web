@@ -1,4 +1,6 @@
 import escapeHtml from 'escape-html';
+import { getTrackLabel } from 'components/mediainfo/trackLabels';
+import { isEnhancedAudioSelectionEnabled, isEnhancedSubtitleSelectionEnabled } from 'utils/extensions';
 
 import { getImageUrl } from 'apps/legacy/features/playback/utils/image';
 import { getItemTextLines } from 'apps/legacy/features/playback/utils/itemText';
@@ -35,9 +37,11 @@ let showVolumeSlider = true;
 function showAudioMenu(context, player, button) {
     const currentIndex = playbackManager.getAudioStreamIndex(player);
     const streams = playbackManager.audioTracks(player);
+    const enhanced = isEnhancedAudioSelectionEnabled(playbackManager.currentItem(player)?.ServerId);
     const menuItems = streams.map(function (s) {
+        const label = enhanced ? getTrackLabel(s, 'Audio') : { name: s.DisplayTitle };
         const menuItem = {
-            name: s.DisplayTitle,
+            ...label,
             id: s.Index
         };
 
@@ -51,6 +55,7 @@ function showAudioMenu(context, player, button) {
     import('../actionSheet/actionSheet').then((actionsheet) => {
         actionsheet.show({
             items: menuItems,
+            dialogClass: enhanced ? 'trackSelectionActionSheet' : undefined,
             positionTo: button,
             callback: function (id) {
                 playbackManager.setAudioStreamIndex(parseInt(id, 10), player);
@@ -62,9 +67,11 @@ function showAudioMenu(context, player, button) {
 function showSubtitleMenu(context, player, button) {
     const currentIndex = playbackManager.getSubtitleStreamIndex(player);
     const streams = playbackManager.subtitleTracks(player);
+    const enhanced = isEnhancedSubtitleSelectionEnabled(playbackManager.currentItem(player)?.ServerId);
     const menuItems = streams.map(function (s) {
+        const label = enhanced ? getTrackLabel(s, 'Subtitle') : { name: s.DisplayTitle };
         const menuItem = {
-            name: s.DisplayTitle,
+            ...label,
             id: s.Index
         };
 
@@ -83,6 +90,7 @@ function showSubtitleMenu(context, player, button) {
     import('../actionSheet/actionSheet').then((actionsheet) => {
         actionsheet.show({
             items: menuItems,
+            dialogClass: enhanced ? 'trackSelectionActionSheet' : undefined,
             positionTo: button,
             callback: function (id) {
                 playbackManager.setSubtitleStreamIndex(parseInt(id, 10), player);

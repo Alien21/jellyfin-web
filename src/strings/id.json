@@ -1819,5 +1819,7 @@
     "ApiKeysLoadError": "Gagal memuat kunci API",
     "Authors": "Pengarang",
     "BrandingLoadError": "Gagal memuat pengaturan branding",
-    "MessageItemMetadataLocked": "Metadata item ini terkunci. Buka kuncinya sebelum menggunakan fitur Mengenali."
+    "MessageItemMetadataLocked": "Metadata item ini terkunci. Buka kuncinya sebelum menggunakan fitur Mengenali.",
+    "TrackHearingImpaired": "Gangguan Pendengaran",
+    "MediaInfoOriginal": "Asli"
 }

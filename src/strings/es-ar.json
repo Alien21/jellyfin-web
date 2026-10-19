@@ -1911,5 +1911,7 @@
     "Novel": "Novela",
     "Screenplay": "Guion",
     "LabelHlsAudioSeekStrategy": "Estrategia de búsqueda de audio.",
-    "MessageItemMetadataLocked": "Los metadatos de este elemento están bloqueados. Desbloquéalos antes de usar la función Identificar."
+    "MessageItemMetadataLocked": "Los metadatos de este elemento están bloqueados. Desbloquéalos antes de usar la función Identificar.",
+    "TrackHearingImpaired": "Discapacidad Auditiva",
+    "MediaInfoOriginal": "Original"
 }

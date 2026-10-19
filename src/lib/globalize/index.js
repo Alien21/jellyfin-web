@@ -1,4 +1,5 @@
 import isEmpty from 'lodash-es/isEmpty';
+import { ensureLanguageNames } from './languageNames';
 
 import { EventType } from 'constants/eventType';
 import { currentSettings as userSettings } from 'scripts/settings/userSettings';
@@ -126,6 +127,7 @@ export function updateCurrentCulture() {
 }
 
 function ensureTranslations(culture) {
+    ensureLanguageNames(culture).catch(error => console.error('Language names failed to load', error));
     for (const i in allTranslations) {
         ensureTranslation(allTranslations[i], culture);
     }
@@ -172,7 +174,7 @@ export function register(options) {
 
 export function loadStrings(options) {
     const locale = getCurrentLocale();
-    const promises = [];
+    const promises = [ensureLanguageNames(locale || FALLBACK_CULTURE)];
     let optionsName;
     if (typeof options === 'string') {
         optionsName = options;

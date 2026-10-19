@@ -1493,5 +1493,7 @@
     "Unknown": "Hindi killala",
     "AllowContentWithTagsHelp": "Ipakita lamang ang media na may hindi bababa sa isa sa mga tinukoy na tag.",
     "AllowSubtitleManagement": "Payagan ang user na mag-palit ng mga subtitle",
-    "MessageItemMetadataLocked": "Naka-lock ang metadata ng item na ito. I-unlock ito bago gamitin ang feature na Kilalanin."
+    "MessageItemMetadataLocked": "Naka-lock ang metadata ng item na ito. I-unlock ito bago gamitin ang feature na Kilalanin.",
+    "TrackHearingImpaired": "Bingi",
+    "MediaInfoOriginal": "Orihinal"
 }

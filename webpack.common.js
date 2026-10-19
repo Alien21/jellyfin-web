@@ -53,6 +53,9 @@ const config = {
         ...THEMES_BY_ID
     },
     resolve: {
+        alias: {
+            '@formatjs/intl-displaynames/locale-data': path.resolve(__dirname, 'node_modules/@formatjs/intl-displaynames/locale-data')
+        },
         extensions: ['.tsx', '.ts', '.js'],
         modules: [
             path.resolve(__dirname, 'src'),
@@ -151,7 +154,9 @@ const config = {
             cacheGroups: {
                 node_modules: {
                     test(module) {
-                        return NODE_MODULES_REGEX.test(module.context);
+                        // Locale data stays in individual lazy chunks, outside the shared package bundle.
+                        return NODE_MODULES_REGEX.test(module.context)
+                            && !/[\\/]@formatjs[\\/]intl-displaynames[\\/]locale-data(?:[\\/]|$)/.test(module.context);
                     },
                     name(module) {
                         // get the name. E.g. node_modules/packageName/not/this/part.js
@@ -238,6 +243,7 @@ const config = {
                     path.resolve(__dirname, 'node_modules/material-react-table'),
                     path.resolve(__dirname, 'node_modules/mdurl'),
                     path.resolve(__dirname, 'node_modules/proxy-polyfill'),
+                    path.resolve(__dirname, 'node_modules/@formatjs'),
                     path.resolve(__dirname, 'node_modules/punycode'),
                     path.resolve(__dirname, 'node_modules/react-blurhash'),
                     path.resolve(__dirname, 'node_modules/react-lazy-load-image-component'),

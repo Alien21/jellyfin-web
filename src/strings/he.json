@@ -1906,5 +1906,7 @@
     "LabelReasons": "סיבות",
     "LabelPlayerSizes": "גדלי נגן",
     "LabelPlaybackQuality": "פריימים נפלו \\ נפגמו",
-    "MessageItemMetadataLocked": "המטא-דאטה של פריט זה נעול. יש לבטל את הנעילה לפני השימוש בתכונת הזיהוי."
+    "MessageItemMetadataLocked": "המטא-דאטה של פריט זה נעול. יש לבטל את הנעילה לפני השימוש בתכונת הזיהוי.",
+    "TrackHearingImpaired": "לקוי שמיעה",
+    "MediaInfoOriginal": "מקור"
 }

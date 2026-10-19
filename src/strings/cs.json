@@ -1,4 +1,10 @@
 {
+    "EnableEnhancedSubtitleSelection": "Přehledný výběr titulků",
+    "EnableEnhancedSubtitleSelectionHelp": "Zobrazí jazyk podle jazyka profilu, příznaky a formát titulků na prvním řádku. Původní název stopy se zobrazí menším, méně výrazným písmem na druhém řádku.",
+    "EnableEnhancedAudioSelection": "Přehledný výběr zvuku",
+    "EnableEnhancedAudioSelectionHelp": "Zobrazí jazyk podle jazyka profilu, zvukový formát a příznaky stopy na prvním řádku. Původní název stopy se zobrazí menším, méně výrazným písmem na druhém řádku.",
+    "TrackHearingImpaired": "Sluchově postižení",
+    "MediaInfoOriginal": "Originál",
     "AccessRestrictedTryAgainLater": "Přístup je v současné době omezen. Prosím zkuste to znovu později.",
     "Actor": "Herec",
     "Add": "Přidat",

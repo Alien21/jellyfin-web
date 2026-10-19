@@ -133,3 +133,101 @@
 .emby-select-iconbutton {
     align-self: flex-end;
 }
+
+.emby-select-track-hidden {
+    display: none;
+}
+
+.emby-select-track-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 2.5em;
+    min-width: 0;
+    text-align: start;
+    cursor: pointer;
+
+    &:disabled {
+        cursor: default;
+    }
+}
+
+.trackSelectionPrimary,
+.trackSelectionSecondary {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.trackSelectionSecondary {
+    font-size: 85%;
+    opacity: 0.65;
+}
+
+.trackSelectionSecondary[hidden] {
+    display: none;
+}
+
+.trackSelectionExpanded {
+    z-index: 10;
+}
+
+.trackSelectionDropdown {
+    position: absolute;
+    z-index: 1;
+    box-sizing: border-box;
+    overflow: auto;
+    overscroll-behavior: contain;
+    border: 1px solid var(--jf-palette-divider, rgba(255, 255, 255, 0.12));
+    border-radius: 0.2em;
+    background: var(--jf-palette-background-paper, #202020);
+    color: var(--jf-palette-text-primary, #fff);
+    box-shadow: 0 0.3em 1em rgba(0, 0, 0, 0.4);
+    padding: 0.25em 0;
+    font-size: inherit;
+    text-align: start;
+}
+
+.trackSelectionOption {
+    position: relative;
+    padding: 0.55em 2em 0.55em 0.7em;
+    cursor: pointer;
+    outline: none;
+
+    [dir="rtl"] & {
+        padding: 0.55em 0.7em 0.55em 2em;
+    }
+
+    &:hover {
+        background: var(--jf-palette-action-hover, rgba(255, 255, 255, 0.08));
+    }
+
+    &:focus {
+        background: var(--jf-palette-action-focus, rgba(255, 255, 255, 0.16));
+    }
+
+    &[aria-selected="true"]::after {
+        content: "\2713";
+        position: absolute;
+        inset-inline-end: 0.65em;
+        top: 0.65em;
+        color: var(--jf-palette-primary-main, #00a4dc);
+    }
+
+    &[aria-disabled="true"] {
+        opacity: 0.5;
+        cursor: default;
+    }
+
+    .trackSelectionPrimary,
+    .trackSelectionSecondary {
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+}
+
+.trackSelections .selectContainer .emby-select-track-button {
+    padding-inline-end: 1.9em;
+}

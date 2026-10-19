@@ -1,4 +1,10 @@
 {
+    "EnableEnhancedSubtitleSelection": "Clearer subtitle selection",
+    "EnableEnhancedSubtitleSelectionHelp": "Shows the language in the profile language, subtitle flags and format on the first line. The original track title appears in smaller, less prominent text on the second line.",
+    "EnableEnhancedAudioSelection": "Clearer audio selection",
+    "EnableEnhancedAudioSelectionHelp": "Shows the language in the profile language, audio format and track flags on the first line. The original track title appears in smaller, less prominent text on the second line.",
+    "TrackHearingImpaired": "Hearing impaired",
+    "MediaInfoOriginal": "Original",
     "Absolute": "Absolute",
     "AccessRestrictedTryAgainLater": "Access is currently restricted. Please try again later.",
     "Actor": "Actor",

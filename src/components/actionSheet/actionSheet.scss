@@ -142,3 +142,19 @@
         right: 0.5em;
     }
 }
+
+.trackSelectionActionSheet .actionsheetListItemBody {
+    min-width: 0;
+}
+
+.trackSelectionActionSheet .actionSheetItemText {
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.trackSelectionActionSheet .secondary {
+    font-size: 85%;
+    opacity: 0.65;
+    overflow-wrap: break-word;
+    white-space: normal;
+}

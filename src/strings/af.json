@@ -859,5 +859,7 @@
     "LabelExternalServerUri": "Eksterne URI",
     "ApiKeysLoadError": "Kon nie aktiwiteite laai nie",
     "Authors": "Skrywers",
-    "MessageItemMetadataLocked": "Hierdie item se metadata is gesluit. Ontsluit dit voordat jy die Identifiseer-funksie gebruik."
+    "MessageItemMetadataLocked": "Hierdie item se metadata is gesluit. Ontsluit dit voordat jy die Identifiseer-funksie gebruik.",
+    "TrackHearingImpaired": "gehoorgestremd",
+    "MediaInfoOriginal": "Oorspronklik"
 }

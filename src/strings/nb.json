@@ -1945,5 +1945,7 @@
     "Screenplay": "Manus",
     "HlsAudioSeekStrategy": "Strategien som brukes ved søking i HLS-strømmer.",
     "LabelHlsAudioSeekStrategy": "Strategi for lydsøking.",
-    "MessageForgotPasswordRedirect": "Du har blitt omdirigert til en ekstern leverandør for tilbakestilling av passord."
+    "MessageForgotPasswordRedirect": "Du har blitt omdirigert til en ekstern leverandør for tilbakestilling av passord.",
+    "TrackHearingImpaired": "Hørselshemmet",
+    "MediaInfoOriginal": "Original"
 }

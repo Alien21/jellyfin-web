@@ -1864,5 +1864,6 @@
     "LabelMetadataReadersHelp": "Давуу эрхийн дарааллаар өөрийн дуртай локал метадата эх сурвалжийг эрэмбэлнэ. Олдсон эхний файл уншигдана.",
     "ConfirmDeleteRepository": "Сан устгах уу?",
     "ButtonAddProvider": "Дамжуулагч нэмэх",
-    "ButtonAddTunerDevice": "Tuner төхөөрөмж нэмэх"
+    "ButtonAddTunerDevice": "Tuner төхөөрөмж нэмэх",
+    "TrackHearingImpaired": "Сонсголын бэрхшээлтэй"
 }

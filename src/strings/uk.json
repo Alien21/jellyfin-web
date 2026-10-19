@@ -1945,5 +1945,7 @@
     "LabelHlsAudioSeekStrategy": "Стратегія пошуку аудіо.",
     "LabelUsernameAllowedCharactersHelp": "Імена користувачів можуть містити літери, цифри, пробіли та такі символи: - _ ' . @ +. Вони не можуть починатися або закінчуватися пробілом.",
     "AudioLanguages": "Мови аудіо",
-    "SubtitleLanguages": "Мови субтитрів"
+    "SubtitleLanguages": "Мови субтитрів",
+    "TrackHearingImpaired": "З порушеннями слуху",
+    "MediaInfoOriginal": "Оригінал"
 }

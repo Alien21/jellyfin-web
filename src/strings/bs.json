@@ -1945,5 +1945,7 @@
     "Screenplay": "Scenarij",
     "HlsAudioSeekStrategy": "Strategija koja se koristi pri premotavanju HLS tokova.",
     "LabelHlsAudioSeekStrategy": "Strategija premotavanja zvuka.",
-    "MessageForgotPasswordRedirect": "Preusmjereni ste na vanjskog pružatelja usluge radi ponovnog postavljanja lozinke."
+    "MessageForgotPasswordRedirect": "Preusmjereni ste na vanjskog pružatelja usluge radi ponovnog postavljanja lozinke.",
+    "TrackHearingImpaired": "Oštećen sluh",
+    "MediaInfoOriginal": "Original"
 }

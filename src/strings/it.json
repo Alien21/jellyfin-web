@@ -1945,5 +1945,7 @@
     "MessageForgotPasswordRedirect": "Sei stato reindirizzato a un fornitore esterno per il ripristino della password.",
     "Screenplay": "Sceneggiatura",
     "LabelBitmapSubtitleAspectMode": "Modalità di aspetto dei sottotitoli bitmap",
-    "MessageItemMetadataLocked": "I metadati di questo oggetto sono bloccati. Sbloccali prima di usare la funzione identifica."
+    "MessageItemMetadataLocked": "I metadati di questo oggetto sono bloccati. Sbloccali prima di usare la funzione identifica.",
+    "TrackHearingImpaired": "Non udenti",
+    "MediaInfoOriginal": "Originale"
 }

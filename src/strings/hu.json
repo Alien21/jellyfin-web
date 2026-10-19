@@ -1945,5 +1945,7 @@
     "LabelBitmapSubtitleAspectMode": "Bittérképes felirat képaránymódja",
     "HlsAudioSeekStrategy": "A HLS-adatfolyamokban történő kereséskor használandó stratégia.",
     "LabelHlsAudioSeekStrategy": "Hangkeresési stratégia.",
-    "MessageForgotPasswordRedirect": "A jelszó visszaállításához átirányítottunk egy külső szolgáltatóhoz."
+    "MessageForgotPasswordRedirect": "A jelszó visszaállításához átirányítottunk egy külső szolgáltatóhoz.",
+    "TrackHearingImpaired": "Hallássérült",
+    "MediaInfoOriginal": "Eredeti"
 }

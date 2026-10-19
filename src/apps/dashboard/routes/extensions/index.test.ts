@@ -10,6 +10,8 @@ const mocks = vi.hoisted(() => ({
     setGlobalSearchEnabled: vi.fn(),
     setLibrarySourceDetailsEnabled: vi.fn(),
     setPlaybackVersionSelectionEnabled: vi.fn(),
+    setEnhancedSubtitleSelectionEnabled: vi.fn(),
+    setEnhancedAudioSelectionEnabled: vi.fn(),
     invalidateQueries: vi.fn()
 }));
 
@@ -23,7 +25,9 @@ vi.mock('@jellyfin/sdk/lib/utils/api/system-api', () => ({
 vi.mock('utils/extensions', () => ({
     setGlobalSearchEnabled: mocks.setGlobalSearchEnabled,
     setLibrarySourceDetailsEnabled: mocks.setLibrarySourceDetailsEnabled,
-    setPlaybackVersionSelectionEnabled: mocks.setPlaybackVersionSelectionEnabled
+    setPlaybackVersionSelectionEnabled: mocks.setPlaybackVersionSelectionEnabled,
+    setEnhancedSubtitleSelectionEnabled: mocks.setEnhancedSubtitleSelectionEnabled,
+    setEnhancedAudioSelectionEnabled: mocks.setEnhancedAudioSelectionEnabled
 }));
 vi.mock('utils/query/queryClient', () => ({ queryClient: { invalidateQueries: mocks.invalidateQueries } }));
 vi.mock('components/layoutManager', () => ({ default: { tv: false } }));
@@ -38,12 +42,15 @@ function submit(
     globalSearch = false,
     favoriteSyncAcrossLibraries = false,
     autoRemoveFavoritesAfterWatching = false,
-    nextUpResumeThreshold = false
+    nextUpResumeThreshold = false,
+    enhancedTracks: { subtitles?: boolean; audio?: boolean } = {}
 ) {
     const formData = new FormData();
     if (favoriteSyncAcrossLibraries) formData.set('EnableFavoriteSyncAcrossLibraries', 'on');
     if (autoRemoveFavoritesAfterWatching) formData.set('EnableAutoRemoveFavoritesAfterWatching', 'on');
     if (nextUpResumeThreshold) formData.set('EnableNextUpResumeThreshold', 'on');
+    if (enhancedTracks.subtitles) formData.set('EnableEnhancedSubtitleSelection', 'on');
+    if (enhancedTracks.audio) formData.set('EnableEnhancedAudioSelection', 'on');
     if (globalSearch) formData.set('EnableGlobalSearch', 'on');
     if (playbackVersionSelection) formData.set('EnablePlaybackVersionSelection', 'on');
     if (librarySourceDetails) formData.set('EnableLibrarySourceDetails', 'on');
@@ -67,6 +74,8 @@ describe('Extensions settings save', () => {
                 EnableFavoriteSyncAcrossLibraries: false,
                 EnableAutoRemoveFavoritesAfterWatching: false,
                 EnableNextUpResumeThreshold: false,
+                EnableEnhancedSubtitleSelection: false,
+                EnableEnhancedAudioSelection: false,
                 EnableGlobalSearch: false,
                 EnableLibrarySourceDetails: true,
                 EnablePlaybackVersionSelection: enabled
@@ -86,6 +95,8 @@ describe('Extensions settings save', () => {
                 EnableFavoriteSyncAcrossLibraries: false,
                 EnableAutoRemoveFavoritesAfterWatching: false,
                 EnableNextUpResumeThreshold: false,
+                EnableEnhancedSubtitleSelection: false,
+                EnableEnhancedAudioSelection: false,
                 EnableGlobalSearch: enabled,
                 EnableLibrarySourceDetails: true,
                 EnablePlaybackVersionSelection: false
@@ -115,6 +126,8 @@ describe('Extensions settings save', () => {
         expect(mocks.updateConfiguration).toHaveBeenCalledWith({
             serverConfiguration: {
                 ServerName: 'My server',
+                EnableEnhancedSubtitleSelection: false,
+                EnableEnhancedAudioSelection: false,
                 EnableGlobalSearch: false,
                 EnableLibrarySourceDetails: true,
                 EnablePlaybackVersionSelection: false,
@@ -135,12 +148,14 @@ describe('Extensions settings save', () => {
             }
         });
 
-        await expect(submit(true, true, true, true, true, enabled)).resolves.toEqual({ isSaved: true });
+        await expect(submit(true, true, true, true, true, enabled, { subtitles: true, audio: true })).resolves.toEqual({ isSaved: true });
 
         expect(mocks.updateConfiguration).toHaveBeenCalledWith({
             serverConfiguration: {
                 ServerName: 'My server',
                 MinResumePct: 2,
+                EnableEnhancedSubtitleSelection: true,
+                EnableEnhancedAudioSelection: true,
                 EnableGlobalSearch: true,
                 EnableLibrarySourceDetails: true,
                 EnablePlaybackVersionSelection: true,
@@ -152,15 +167,29 @@ describe('Extensions settings save', () => {
         expect(mocks.invalidateQueries).toHaveBeenCalledOnce();
     });
 
+    test.each([[false, false], [true, false], [false, true], [true, true]])('persists subtitle and audio label extensions independently (%s, %s)', async (subtitles, audio) => {
+        await expect(submit(false, false, false, false, false, false, { subtitles, audio })).resolves.toEqual({ isSaved: true });
+        expect(mocks.updateConfiguration).toHaveBeenCalledWith({ serverConfiguration: expect.objectContaining({
+            EnableEnhancedSubtitleSelection: subtitles,
+            EnableEnhancedAudioSelection: audio
+        }) });
+        expect(mocks.setEnhancedSubtitleSelectionEnabled).toHaveBeenCalledWith(subtitles);
+        expect(mocks.setEnhancedAudioSelectionEnabled).toHaveBeenCalledWith(audio);
+        expect(mocks.updateConfiguration.mock.invocationCallOrder[0]).toBeLessThan(mocks.setEnhancedSubtitleSelectionEnabled.mock.invocationCallOrder[0]);
+        expect(mocks.updateConfiguration.mock.invocationCallOrder[0]).toBeLessThan(mocks.setEnhancedAudioSelectionEnabled.mock.invocationCallOrder[0]);
+    });
+
     test('does not change runtime capabilities when the server rejects the save', async () => {
         const error = new Error('Save failed');
         mocks.updateConfiguration.mockRejectedValue(error);
 
-        await expect(submit(true, false)).rejects.toThrow(error);
+        await expect(submit(true, false, false, false, false, false, { subtitles: true, audio: true })).rejects.toThrow(error);
 
         expect(mocks.setGlobalSearchEnabled).not.toHaveBeenCalled();
         expect(mocks.setLibrarySourceDetailsEnabled).not.toHaveBeenCalled();
         expect(mocks.setPlaybackVersionSelectionEnabled).not.toHaveBeenCalled();
+        expect(mocks.setEnhancedSubtitleSelectionEnabled).not.toHaveBeenCalled();
+        expect(mocks.setEnhancedAudioSelectionEnabled).not.toHaveBeenCalled();
         expect(mocks.invalidateQueries).not.toHaveBeenCalled();
     });
 });

@@ -1945,5 +1945,7 @@
     "Screenplay": "Guion",
     "HlsAudioSeekStrategy": "Estrategia que se utilizará al buscar en transmisiones HLS.",
     "LabelHlsAudioSeekStrategy": "Estrategia de búsqueda de audio.",
-    "MessageForgotPasswordRedirect": "Se te redirigió a un proveedor externo para restablecer la contraseña."
+    "MessageForgotPasswordRedirect": "Se te redirigió a un proveedor externo para restablecer la contraseña.",
+    "TrackHearingImpaired": "Discapacidad Auditiva",
+    "MediaInfoOriginal": "Original"
 }

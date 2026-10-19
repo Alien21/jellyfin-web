@@ -1945,5 +1945,7 @@
     "LabelHlsAudioSeekStrategy": "آڈیو سیک حکمت عملی۔",
     "EnableVideoToolboxTonemapping": "VideoToolbox ٹون میپنگ فعال کریں",
     "MessageForgotPasswordRedirect": "پاس ورڈ ری سیٹ کے لیے آپ کو ایک بیرونی فراہم کنندہ کی جانب بھیج دیا گیا ہے۔",
-    "MessageItemMetadataLocked": "اس آئٹم کا میٹا ڈیٹا لاک ہے۔ شناخت کی خصوصیت استعمال کرنے سے پہلے اسے ان لاک کریں۔"
+    "MessageItemMetadataLocked": "اس آئٹم کا میٹا ڈیٹا لاک ہے۔ شناخت کی خصوصیت استعمال کرنے سے پہلے اسے ان لاک کریں۔",
+    "TrackHearingImpaired": "قوت سماعت سے محروم",
+    "MediaInfoOriginal": "اصل"
 }

@@ -1,4 +1,4 @@
-import { isLibrarySourceDetailsEnabled } from 'utils/extensions';
+import { isEnhancedAudioSelectionEnabled, isEnhancedSubtitleSelectionEnabled, isLibrarySourceDetailsEnabled } from 'utils/extensions';
 import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client/models/base-item-kind';
 import { ItemFields } from '@jellyfin/sdk/lib/generated-client/models/item-fields';
 import { PersonKind } from '@jellyfin/sdk/lib/generated-client/models/person-kind';
@@ -19,6 +19,7 @@ import imageLoader from 'components/images/imageLoader';
 import itemContextMenu from 'components/itemContextMenu';
 import itemHelper from 'components/itemHelper';
 import mediaInfo from 'components/mediainfo/mediainfo';
+import { getTrackLabel } from 'components/mediainfo/trackLabels';
 import layoutManager from 'components/layoutManager';
 import listView from 'components/listview/listview';
 import loading from 'components/loading/loading';
@@ -229,10 +230,20 @@ function renderTrackSelections(page, instance, item, forceReload) {
         page.querySelector('.selectSourceContainer').classList.add('hide');
     }
 
-    if (select.value !== currentValue || forceReload) {
+    const trackLabelStyle = [
+        globalize.getCurrentLocale(),
+        isEnhancedAudioSelectionEnabled(item.ServerId),
+        isEnhancedSubtitleSelectionEnabled(item.ServerId)
+    ].join('|');
+    const labelsChanged = page.dataset.trackLabelStyle !== trackLabelStyle;
+    page.dataset.trackLabelStyle = trackLabelStyle;
+    const sourceChanged = select.value !== currentValue || forceReload;
+    if (sourceChanged || labelsChanged) {
+        const audioIndex = sourceChanged ? undefined : Number(page.querySelector('.selectAudio').value);
+        const subtitleIndex = sourceChanged ? undefined : Number(page.querySelector('.selectSubtitles').value);
         renderVideoSelections(page, mediaSources);
-        renderAudioSelections(page, mediaSources);
-        renderSubtitleSelections(page, mediaSources);
+        renderAudioSelections(page, mediaSources, item.ServerId, audioIndex);
+        renderSubtitleSelections(page, mediaSources, item.ServerId, subtitleIndex);
     }
 }
 
@@ -270,7 +281,7 @@ function renderVideoSelections(page, mediaSources) {
     }
 }
 
-function renderAudioSelections(page, mediaSources) {
+function renderAudioSelections(page, mediaSources, serverId, selectedIndex) {
     const mediaSource = getSelectedMediaSource(page, mediaSources);
 
     const tracks = mediaSource.MediaStreams.filter(function (m) {
@@ -278,11 +289,14 @@ function renderAudioSelections(page, mediaSources) {
     });
     tracks.sort(itemHelper.sortTracks);
     const select = page.querySelector('.selectAudio');
+    const enhanced = isEnhancedAudioSelectionEnabled(serverId);
+    select.dataset.trackSelection = String(enhanced);
     select.setLabel(globalize.translate('Audio'));
-    const selectedId = mediaSource.DefaultAudioStreamIndex;
+    const selectedId = selectedIndex ?? mediaSource.DefaultAudioStreamIndex;
     select.innerHTML = tracks.map(function (v) {
         const selected = v.Index === selectedId ? ' selected' : '';
-        return `<option value="${v.Index}" ${selected}>${escapeHtml(v.DisplayTitle)}</option>`;
+        const label = enhanced ? getTrackLabel(v, 'Audio') : { name: v.DisplayTitle };
+        return `<option value="${v.Index}" ${selected} data-secondary-text="${escapeHtml(label.secondaryText || '')}">${escapeHtml(label.name)}</option>`;
     }).join('');
 
     if (tracks.length > 1) {
@@ -290,6 +304,7 @@ function renderAudioSelections(page, mediaSources) {
     } else {
         select.setAttribute('disabled', 'disabled');
     }
+    select.refreshTrackSelection();
 
     if (tracks.length) {
         page.querySelector('.selectAudioContainer').classList.remove('hide');
@@ -298,7 +313,7 @@ function renderAudioSelections(page, mediaSources) {
     }
 }
 
-function renderSubtitleSelections(page, mediaSources) {
+function renderSubtitleSelections(page, mediaSources, serverId, selectedIndex) {
     const mediaSource = getSelectedMediaSource(page, mediaSources);
 
     const tracks = mediaSource.MediaStreams.filter(function (m) {
@@ -306,13 +321,16 @@ function renderSubtitleSelections(page, mediaSources) {
     });
     tracks.sort(itemHelper.sortTracks);
     const select = page.querySelector('.selectSubtitles');
+    const enhanced = isEnhancedSubtitleSelectionEnabled(serverId);
+    select.dataset.trackSelection = String(enhanced);
     select.setLabel(globalize.translate('Subtitles'));
-    const selectedId = mediaSource.DefaultSubtitleStreamIndex == null ? -1 : mediaSource.DefaultSubtitleStreamIndex;
+    const selectedId = selectedIndex ?? mediaSource.DefaultSubtitleStreamIndex ?? -1;
 
     let selected = selectedId === -1 ? ' selected' : '';
-    select.innerHTML = '<option value="-1">' + globalize.translate('Off') + '</option>' + tracks.map(function (v) {
+    select.innerHTML = `<option value="-1"${selected}>${escapeHtml(globalize.translate('Off'))}</option>` + tracks.map(function (v) {
         selected = v.Index === selectedId ? ' selected' : '';
-        return `<option value="${v.Index}" ${selected}>${escapeHtml(v.DisplayTitle)}</option>`;
+        const label = enhanced ? getTrackLabel(v, 'Subtitle') : { name: v.DisplayTitle };
+        return `<option value="${v.Index}" ${selected} data-secondary-text="${escapeHtml(label.secondaryText || '')}">${escapeHtml(label.name)}</option>`;
     }).join('');
 
     if (tracks.length > 0) {
@@ -320,6 +338,7 @@ function renderSubtitleSelections(page, mediaSources) {
     } else {
         select.setAttribute('disabled', 'disabled');
     }
+    select.refreshTrackSelection();
 
     if (tracks.length) {
         page.querySelector('.selectSubtitlesContainer').classList.remove('hide');
@@ -2156,8 +2175,8 @@ export default function (view, params) {
         bindAll(view, '.btnMoreCommands', 'click', onMoreCommandsClick);
         view.querySelector('.selectSource').addEventListener('change', function () {
             renderVideoSelections(view, self._currentPlaybackMediaSources);
-            renderAudioSelections(view, self._currentPlaybackMediaSources);
-            renderSubtitleSelections(view, self._currentPlaybackMediaSources);
+            renderAudioSelections(view, self._currentPlaybackMediaSources, currentItem.ServerId);
+            renderSubtitleSelections(view, self._currentPlaybackMediaSources, currentItem.ServerId);
             refreshSelectedVersion();
         });
         view.addEventListener('viewshow', function (e) {
@@ -2229,8 +2248,8 @@ export default function (view, params) {
             currentItem = versionItem;
             reloadFromItem(self, view, params, versionItem, user);
             renderVideoSelections(view, self._currentPlaybackMediaSources);
-            renderAudioSelections(view, self._currentPlaybackMediaSources);
-            renderSubtitleSelections(view, self._currentPlaybackMediaSources);
+            renderAudioSelections(view, self._currentPlaybackMediaSources, currentItem.ServerId);
+            renderSubtitleSelections(view, self._currentPlaybackMediaSources, currentItem.ServerId);
         }).catch(function (err) {
             console.error('failed to load alternate version item', err);
         });

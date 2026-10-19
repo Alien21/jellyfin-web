@@ -14,6 +14,8 @@ import mouseManager from 'scripts/mouseManager';
 import datetime from 'scripts/datetime';
 import itemHelper from 'components/itemHelper';
 import mediaInfo from 'components/mediainfo/mediainfo';
+import { getTrackLabel } from 'components/mediainfo/trackLabels';
+import { isEnhancedAudioSelectionEnabled, isEnhancedSubtitleSelectionEnabled } from 'utils/extensions';
 import focusManager from 'components/focusManager';
 import Events from 'utils/events';
 import globalize from 'lib/globalize';
@@ -1022,9 +1024,11 @@ export default function (view) {
         const player = currentPlayer;
         const audioTracks = playbackManager.audioTracks(player);
         const currentIndex = playbackManager.getAudioStreamIndex(player);
+        const enhanced = isEnhancedAudioSelectionEnabled(currentItem?.ServerId);
         const menuItems = audioTracks.map(function (stream) {
+            const label = enhanced ? getTrackLabel(stream, 'Audio') : { name: stream.DisplayTitle };
             const opt = {
-                name: stream.DisplayTitle,
+                ...label,
                 id: stream.Index
             };
 
@@ -1039,6 +1043,7 @@ export default function (view) {
         import('components/actionSheet/actionSheet').then(({ default: actionsheet }) => {
             actionsheet.show({
                 items: menuItems,
+                dialogClass: enhanced ? 'trackSelectionActionSheet' : undefined,
                 title: globalize.translate('Audio'),
                 positionTo: positionTo
             }).then(function (id) {
@@ -1060,6 +1065,7 @@ export default function (view) {
         if (!playbackManager.playerHasSecondarySubtitleSupport(player)) return;
         let currentIndex = playbackManager.getSecondarySubtitleStreamIndex(player);
         const streams = playbackManager.secondarySubtitleTracks(player);
+        const enhanced = isEnhancedSubtitleSelectionEnabled(currentItem?.ServerId);
 
         if (currentIndex == null) {
             currentIndex = -1;
@@ -1071,8 +1077,9 @@ export default function (view) {
         });
 
         const menuItems = streams.map(function (stream) {
+            const label = enhanced ? getTrackLabel(stream, 'Subtitle') : { name: stream.DisplayTitle };
             const opt = {
-                name: stream.DisplayTitle,
+                ...label,
                 id: stream.Index
             };
 
@@ -1085,6 +1092,7 @@ export default function (view) {
 
         actionsheet.show({
             title: globalize.translate('SecondarySubtitles'),
+            dialogClass: enhanced ? 'trackSelectionActionSheet' : undefined,
             items: menuItems,
             positionTo
         }).then(function (id) {
@@ -1106,6 +1114,7 @@ export default function (view) {
         const player = currentPlayer;
         const streams = playbackManager.subtitleTracks(player);
         const secondaryStreams = playbackManager.secondarySubtitleTracks(player);
+        const enhanced = isEnhancedSubtitleSelectionEnabled(currentItem?.ServerId);
         let currentIndex = playbackManager.getSubtitleStreamIndex(player);
 
         if (currentIndex == null) {
@@ -1117,8 +1126,9 @@ export default function (view) {
             DisplayTitle: globalize.translate('Off')
         });
         const menuItems = streams.map(function (stream) {
+            const label = enhanced ? getTrackLabel(stream, 'Subtitle') : { name: stream.DisplayTitle };
             const opt = {
-                name: stream.DisplayTitle,
+                ...label,
                 id: stream.Index
             };
 
@@ -1156,6 +1166,7 @@ export default function (view) {
         import('components/actionSheet/actionSheet').then(({ default: actionsheet }) => {
             actionsheet.show({
                 title: globalize.translate('Subtitles'),
+                dialogClass: enhanced ? 'trackSelectionActionSheet' : undefined,
                 items: menuItems,
                 positionTo: positionTo
             }).then(function (id) {

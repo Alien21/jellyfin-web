@@ -1945,5 +1945,7 @@
     "HlsAudioSeekStrategy": "Strategien som skal brukast ved søking i HLS-straumar.",
     "LabelHlsAudioSeekStrategy": "Strategi for lydsøking.",
     "MessageForgotPasswordRedirect": "Du har blitt omdirigert til ein ekstern leverandør for tilbakestilling av passord.",
-    "MessageItemMetadataLocked": "Metadata for dette elementet er låste. Lås dei opp før du brukar identifiseringsfunksjonen."
+    "MessageItemMetadataLocked": "Metadata for dette elementet er låste. Lås dei opp før du brukar identifiseringsfunksjonen.",
+    "TrackHearingImpaired": "Nedsett høyrsel",
+    "MediaInfoOriginal": "Original"
 }

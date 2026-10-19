@@ -291,5 +291,7 @@
     "LabelBindToLocalNetworkAddress": "Pautkan ke alamat rangkaian tempatan",
     "LabelBirthYear": "Tahun kelahiran",
     "ActivitiesLoadError": "Gagal untuk memuatkan aktiviti",
-    "BitmapSubtitleAspectModeContain": "Mengandungi"
+    "BitmapSubtitleAspectModeContain": "Mengandungi",
+    "TrackHearingImpaired": "Lemah Pendengaran",
+    "MediaInfoOriginal": "Asal"
 }

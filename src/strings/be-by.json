@@ -1945,5 +1945,7 @@
     "Screenplay": "Сцэнарый",
     "HlsAudioSeekStrategy": "Стратэгія, якая выкарыстоўваецца пры перамотванні патокаў HLS.",
     "LabelHlsAudioSeekStrategy": "Стратэгія перамотвання аўдыя.",
-    "MessageForgotPasswordRedirect": "Вы былі перанакіраваны да знешняга пастаўшчыка для скіду пароля."
+    "MessageForgotPasswordRedirect": "Вы былі перанакіраваны да знешняга пастаўшчыка для скіду пароля.",
+    "TrackHearingImpaired": "Са слабым слыхам",
+    "MediaInfoOriginal": "Арыгінал"
 }

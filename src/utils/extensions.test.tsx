@@ -7,7 +7,7 @@ import SearchResultsRow from 'apps/legacy/features/search/components/SearchResul
 import { loadResume } from 'components/homesections/sections/resume';
 import type { SectionContainerElement } from 'components/homesections/sections/section';
 import type { UserSettings } from 'scripts/settings/userSettings';
-import { isGlobalSearchEnabled, setGlobalSearchEnabled, isLibrarySourceDetailsEnabled, isPlaybackVersionSelectionEnabled, setLibrarySourceDetailsEnabled, setPlaybackVersionSelectionEnabled } from './extensions';
+import { isEnhancedAudioSelectionEnabled, isEnhancedSubtitleSelectionEnabled, isGlobalSearchEnabled, setEnhancedAudioSelectionEnabled, setEnhancedSubtitleSelectionEnabled, setGlobalSearchEnabled, isLibrarySourceDetailsEnabled, isPlaybackVersionSelectionEnabled, setLibrarySourceDetailsEnabled, setPlaybackVersionSelectionEnabled } from './extensions';
 
 const mocks = vi.hoisted(() => ({
     currentApiClient: vi.fn(),
@@ -46,7 +46,7 @@ vi.mock('lib/globalize', () => ({ default: { translate: (key: string) => key } }
 vi.mock('elements/emby-scroller/emby-scroller', () => ({}));
 vi.mock('elements/emby-itemscontainer/emby-itemscontainer', () => ({}));
 
-type ServerInfo = { Id: string; EnableGlobalSearch?: boolean; EnableLibrarySourceDetails?: boolean; EnablePlaybackVersionSelection?: boolean };
+type ServerInfo = { Id: string; EnableGlobalSearch?: boolean; EnableLibrarySourceDetails?: boolean; EnablePlaybackVersionSelection?: boolean; EnableEnhancedSubtitleSelection?: boolean; EnableEnhancedAudioSelection?: boolean };
 
 function createClient(id: string, enabled?: boolean) {
     let info: ServerInfo = { Id: id, EnableLibrarySourceDetails: enabled };
@@ -366,5 +366,62 @@ describe('library label consumers', () => {
             showLibraryName: enabled,
             items: [{ Id: 'movie', Type: 'Movie' }]
         }));
+    });
+});
+
+describe.each([
+    {
+        name: 'subtitle',
+        key: 'EnableEnhancedSubtitleSelection' as const,
+        otherKey: 'EnableEnhancedAudioSelection' as const,
+        enabled: isEnhancedSubtitleSelectionEnabled,
+        save: setEnhancedSubtitleSelectionEnabled
+    },
+    {
+        name: 'audio',
+        key: 'EnableEnhancedAudioSelection' as const,
+        otherKey: 'EnableEnhancedSubtitleSelection' as const,
+        enabled: isEnhancedAudioSelectionEnabled,
+        save: setEnhancedAudioSelectionEnabled
+    }
+])('enhanced $name selection server capability', ({ key, otherKey, enabled, save }) => {
+    test('defaults to disabled on an older server or without a current connection', () => {
+        expect(enabled()).toBe(false);
+        mocks.currentApiClient.mockReturnValue(undefined);
+        expect(enabled()).toBe(false);
+        expect(() => save(true)).not.toThrow();
+        expect(currentClient.updateServerInfo).not.toHaveBeenCalled();
+    });
+
+    test('uses the current server by default and isolates an explicitly requested server', () => {
+        otherClient.serverInfo({ Id: 'other', [key]: true });
+        expect(enabled()).toBe(false);
+        expect(enabled('other')).toBe(true);
+        expect(enabled('missing')).toBe(false);
+        mocks.currentApiClient.mockReturnValue(otherClient);
+        expect(enabled(null)).toBe(true);
+    });
+
+    test('does not substitute the current capability for an unknown server', () => {
+        currentClient.serverInfo({ Id: 'current', [key]: true });
+        expect(enabled('missing')).toBe(false);
+        expect(mocks.currentApiClient).not.toHaveBeenCalled();
+    });
+
+    test.each([true, false])('persists %s without changing the other track capability or another server', value => {
+        currentClient.serverInfo({ Id: 'current', [otherKey]: true });
+        save(value);
+        expect(enabled()).toBe(value);
+        expect(currentClient.updateServerInfo).toHaveBeenLastCalledWith(
+            { Id: 'current', [otherKey]: true, [key]: value },
+            'https://current.example'
+        );
+        expect(otherClient.updateServerInfo).not.toHaveBeenCalled();
+    });
+
+    test('does not persist a setting while current server information is unavailable', () => {
+        currentClient.serverInfo.mockReturnValueOnce(undefined as unknown as ServerInfo);
+        expect(() => save(true)).not.toThrow();
+        expect(currentClient.updateServerInfo).not.toHaveBeenCalled();
     });
 });

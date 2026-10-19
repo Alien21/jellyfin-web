@@ -1945,5 +1945,7 @@
     "Screenplay": "Scenārijs",
     "HlsAudioSeekStrategy": "Stratēģija, kas jāizmanto, meklējot HLS straumēs.",
     "LabelHlsAudioSeekStrategy": "Audio meklēšanas stratēģija.",
-    "MessageForgotPasswordRedirect": "Paroles atiestatīšanai jūs novirzīja pie ārēja pakalpojumu sniedzēja."
+    "MessageForgotPasswordRedirect": "Paroles atiestatīšanai jūs novirzīja pie ārēja pakalpojumu sniedzēja.",
+    "TrackHearingImpaired": "Ar dzirdes traucējumiem",
+    "MediaInfoOriginal": "Oriģināls"
 }

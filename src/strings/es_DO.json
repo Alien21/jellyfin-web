@@ -26,5 +26,7 @@
     "Playlists": "Listas de reproducción",
     "Shows": "Series",
     "Songs": "Canciones",
-    "ValueSpecialEpisodeName": "Especial - {0}"
+    "ValueSpecialEpisodeName": "Especial - {0}",
+    "TrackHearingImpaired": "Discapacidad auditiva",
+    "MediaInfoOriginal": "Original"
 }

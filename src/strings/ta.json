@@ -1945,5 +1945,7 @@
     "LabelPlayerSizes": "பிளேயர் அளவுகள்",
     "LabelPlaybackQuality": "சட்டகம் கைவிடப்பட்டது / சிதைந்தது",
     "AudioLanguages": "ஆடியோ மொழிகள்",
-    "SubtitleLanguages": "துணைத் தலைப்பு மொழிகள்"
+    "SubtitleLanguages": "துணைத் தலைப்பு மொழிகள்",
+    "TrackHearingImpaired": "செவித்திறன் குறைபாடுடையவர்",
+    "MediaInfoOriginal": "அசல்"
 }

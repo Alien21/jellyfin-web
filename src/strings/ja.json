@@ -1945,5 +1945,7 @@
     "LabelPlayerSizes": "プレーヤーサイズ",
     "LabelPlaybackQuality": "フレームドロップ・破損",
     "AudioLanguages": "音声言語",
-    "SubtitleLanguages": "字幕言語"
+    "SubtitleLanguages": "字幕言語",
+    "TrackHearingImpaired": "聴覚障害の方",
+    "MediaInfoOriginal": "オリジナル"
 }

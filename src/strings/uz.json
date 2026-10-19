@@ -643,5 +643,7 @@
     "Anime": "Anime",
     "ApiKeysLoadError": "API kalitlarni yuklashda xatolik ketdi",
     "Authors": "Mualliflar",
-    "Author": "Muallif"
+    "Author": "Muallif",
+    "TrackHearingImpaired": "Yaxshi eshitmaydiganlar uchun",
+    "MediaInfoOriginal": "Original"
 }
