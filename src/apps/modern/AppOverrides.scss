@@ -44,3 +44,20 @@ $mui-bp-xl: 1536px;
         }
     }
 }
+
+.layout-desktop .itemDetailPage {
+    // Keep the poster's 12.96em overlap below the menu when reducing the top gap.
+    --detail-header-trim: clamp(0em, calc(40vh - 13.96em), 8vh);
+
+    .detailLogo {
+        top: calc(10vh - var(--detail-header-trim));
+    }
+
+    .itemBackdrop {
+        height: calc(40vh - var(--detail-header-trim));
+
+        @media all and (max-height: 31.25em) {
+            height: 52vh;
+        }
+    }
+}
