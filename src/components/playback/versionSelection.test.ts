@@ -31,7 +31,7 @@ vi.mock('components/actionSheet/actionSheet', () => ({
 }));
 
 const sources = [
-    { Id: 'episode', Name: '2160p][CS+EN]-TreZzoR' },
+    { Id: 'episode', Name: '[2160p][CS+EN]-TreZzoR]' },
     { Id: 'alternate', Name: '1080p][CS+EN]-DeDo' }
 ];
 
@@ -172,7 +172,7 @@ describe('playback version selection', () => {
         }
     );
 
-    test('fetches missing versions from the resolved episode server and offers their exact names', async () => {
+    test('fetches missing versions from the resolved episode server and offers their formatted names', async () => {
         const options: PlayOptions = {};
 
         await expect(selectPlaybackVersion(makeItem({ MediaSources: undefined }), options)).resolves.toBe(true);
@@ -184,8 +184,8 @@ describe('playback version selection', () => {
             title: 'LabelVersion',
             text: 'Na západ, starče',
             items: [
-                expect.objectContaining({ id: 'episode', name: sources[0].Name, selected: true }),
-                expect.objectContaining({ id: 'alternate', name: sources[1].Name, selected: false })
+                expect.objectContaining({ id: 'episode', name: '2160p  CS+EN -TreZzoR', selected: true }),
+                expect.objectContaining({ id: 'alternate', name: '1080p  CS+EN -DeDo', selected: false })
             ]
         }));
         expect(options.mediaSourceId).toBe('alternate');

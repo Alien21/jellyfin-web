@@ -36,6 +36,7 @@ import browser from 'scripts/browser';
 import datetime from 'scripts/datetime';
 import dom from 'utils/dom';
 import { renderComponent } from 'utils/reactUtils';
+import { getMediaSourceDisplayName } from 'utils/mediaSource';
 import { download } from 'scripts/fileDownloader';
 import libraryMenu from 'scripts/libraryMenu';
 import * as userSettings from 'scripts/settings/userSettings';
@@ -219,7 +220,7 @@ function renderTrackSelections(page, instance, item, forceReload) {
     const selectedId = mediaSources.some(m => m.Id === currentValue) ? currentValue : mediaSources[0].Id;
     select.innerHTML = mediaSources.map(function (v) {
         const selected = v.Id === selectedId ? ' selected' : '';
-        return '<option value="' + v.Id + '"' + selected + '>' + escapeHtml(v.Name) + '</option>';
+        return '<option value="' + v.Id + '"' + selected + '>' + escapeHtml(getMediaSourceDisplayName(v)) + '</option>';
     }).join('');
 
     if (mediaSources.length > 1) {

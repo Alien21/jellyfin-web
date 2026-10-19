@@ -8,6 +8,7 @@ import globalize from 'lib/globalize';
 import { ServerConnections } from 'lib/jellyfin-apiclient';
 import type { PlayOptions } from 'types/playOptions';
 import { isPlaybackVersionSelectionEnabled } from 'utils/extensions';
+import { getMediaSourceDisplayName } from 'utils/mediaSource';
 import { getVersionStreamSelection } from './versionStreamSelection';
 
 /** Whether a detail page can offer a choice of playable movie/episode versions. */
@@ -59,7 +60,7 @@ export async function selectPlaybackVersion(items: BaseItemDto[], options: PlayO
             text: [item.SeriesName, getDisplayName(item)].filter(Boolean).join(' – '),
             items: versions.map(source => ({
                 id: source.Id || undefined,
-                name: source.Name || '',
+                name: getMediaSourceDisplayName(source),
                 selected: source.Id === selectedId
             }))
         });
