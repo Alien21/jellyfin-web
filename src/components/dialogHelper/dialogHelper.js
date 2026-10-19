@@ -3,6 +3,7 @@ import browser from '../../scripts/browser';
 import layoutManager from '../layoutManager';
 import inputManager from '../../scripts/inputManager';
 import { toBoolean } from '../../utils/string.ts';
+import { lockDocumentScroll } from '../../utils/documentScrollLock';
 import { hide } from '../loading/loading.ts';
 import dom from '../../utils/dom';
 
@@ -48,7 +49,7 @@ function DialogHashHandler(dlg, hash, resolve) {
     const self = this;
     self.originalUrl = window.location.href;
     const activeElement = document.activeElement;
-    let removeScrollLockOnClose = false;
+    let releaseScrollLock;
     let unlisten;
 
     function onHashChange({ location }) {
@@ -104,9 +105,8 @@ function DialogHashHandler(dlg, hash, resolve) {
 
         dlg.classList.remove('opened');
 
-        if (removeScrollLockOnClose) {
-            document.body.classList.remove('noScroll');
-        }
+        releaseScrollLock?.();
+        releaseScrollLock = null;
 
         if (isHistoryEnabled(dlg)) {
             const state = history.location.state || {};
@@ -169,9 +169,8 @@ function DialogHashHandler(dlg, hash, resolve) {
         cancelable: false
     }));
 
-    if (dlg.getAttribute('data-lockscroll') === 'true' && !document.body.classList.contains('noScroll')) {
-        document.body.classList.add('noScroll');
-        removeScrollLockOnClose = true;
+    if (dlg.getAttribute('data-lockscroll') === 'true') {
+        releaseScrollLock = lockDocumentScroll();
     }
 
     animateDialogOpen(dlg);
