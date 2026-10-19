@@ -1,3 +1,4 @@
+import { isLibrarySourceDetailsEnabled } from 'utils/extensions';
 import { getPlaylistApi } from '@jellyfin/sdk/lib/utils/api/playlist-api';
 
 import listView from 'components/listview/listview';
@@ -6,7 +7,7 @@ import { ServerConnections } from 'lib/jellyfin-apiclient';
 function getFetchPlaylistItemsFn(apiClient, itemId) {
     return function () {
         const query = {
-            Fields: 'PrimaryImageAspectRatio,MediaSourceCount,Chapters,Trickplay',
+            Fields: 'PrimaryImageAspectRatio,MediaSourceCount,Chapters,Trickplay' + (isLibrarySourceDetailsEnabled(apiClient.serverId()) ? ',LibraryInfo' : ''),
             EnableImageTypes: 'Primary,Backdrop,Banner,Thumb',
             UserId: apiClient.getCurrentUserId()
         };
@@ -14,11 +15,12 @@ function getFetchPlaylistItemsFn(apiClient, itemId) {
     };
 }
 
-function getItemsHtmlFn(playlistId, isEditable = false) {
+function getItemsHtmlFn(playlistId, serverId, isEditable = false) {
     return function (items) {
         return listView.getListViewHtml({
             items,
             showIndex: false,
+            showLibraryName: isLibrarySourceDetailsEnabled(serverId),
             playFromHere: true,
             action: 'playallfromhere',
             smallIcon: true,
@@ -56,7 +58,7 @@ async function init(page, item) {
     elem.classList.remove('vertical-wrap');
     elem.enableDragReordering(isEditable);
     elem.fetchData = getFetchPlaylistItemsFn(apiClient, item.Id);
-    elem.getItemsHtml = getItemsHtmlFn(item.Id, isEditable);
+    elem.getItemsHtml = getItemsHtmlFn(item.Id, apiClient.serverId(), isEditable);
 }
 
 function refresh(page) {

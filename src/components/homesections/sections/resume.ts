@@ -1,3 +1,4 @@
+import { isLibrarySourceDetailsEnabled } from 'utils/extensions';
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client/models/base-item-dto';
 import { ImageType } from '@jellyfin/sdk/lib/generated-client/models/image-type';
 import { ItemFields } from '@jellyfin/sdk/lib/generated-client/models/item-fields';
@@ -31,7 +32,10 @@ function getItemsToResumeFn(
         const options = {
             userId: apiClient.getCurrentUserId(),
             limit,
-            fields: [ ItemFields.PrimaryImageAspectRatio ],
+            fields: [
+                ItemFields.PrimaryImageAspectRatio,
+                ...(isLibrarySourceDetailsEnabled() ? ['LibraryInfo' as ItemFields] : [])
+            ],
             imageTypeLimit: 1,
             enableImageTypes: [
                 ImageType.Primary,
@@ -64,6 +68,7 @@ function getItemsToResumeHtmlFn(
             overlayText: false,
             showTitle: true,
             showParentTitle: true,
+            showLibraryName: isLibrarySourceDetailsEnabled(),
             lazy: true,
             showDetailsMenu: true,
             overlayPlayButton: true,

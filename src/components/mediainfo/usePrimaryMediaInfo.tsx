@@ -1,3 +1,4 @@
+import { isLibrarySourceDetailsEnabled } from 'utils/extensions';
 import * as userSettings from 'scripts/settings/userSettings';
 import datetime from 'scripts/datetime';
 import globalize from 'lib/globalize';
@@ -458,6 +459,7 @@ function usePrimaryMediaInfo({
         RecordAnyChannel,
         ChannelName,
         ChildCount,
+        UniqueItemCount,
         RunTimeTicks,
         PremiereDate,
         OfficialRating,
@@ -482,7 +484,7 @@ function usePrimaryMediaInfo({
         isFolderRuntimeEnabled,
         showItemCountInfo,
         SongCount,
-        ChildCount,
+        Type === ItemKind.BoxSet && isLibrarySourceDetailsEnabled(item.ServerId) ? UniqueItemCount ?? ChildCount : ChildCount,
         RunTimeTicks,
         Type,
         addMiscInfo

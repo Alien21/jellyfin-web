@@ -1,3 +1,4 @@
+import { isLibrarySourceDetailsEnabled } from 'utils/extensions';
 import globalize from 'lib/globalize';
 import listView from 'components/listview/listview';
 import * as userSettings from 'scripts/settings/userSettings';
@@ -237,6 +238,7 @@ function updateAlphaPickerState(instance) {
 }
 
 function getItems(instance, params, item, sortBy, startIndex, limit) {
+    const libraryFields = !params.parentId && isLibrarySourceDetailsEnabled(params.serverId) ? ',LibraryInfo' : '';
     const apiClient = ServerConnections.getApiClient(params.serverId);
 
     instance.queryRecursive = false;
@@ -255,7 +257,7 @@ function getItems(instance, params, item, sortBy, startIndex, limit) {
     if (params.type === 'nextup') {
         return apiClient.getNextUpEpisodes(modifyQueryWithFilters(instance, {
             Limit: limit,
-            Fields: 'PrimaryImageAspectRatio,DateCreated,MediaSourceCount,Chapters,Trickplay',
+            Fields: 'PrimaryImageAspectRatio,DateCreated,MediaSourceCount,Chapters,Trickplay' + libraryFields,
             UserId: apiClient.getCurrentUserId(),
             ImageTypeLimit: 1,
             EnableImageTypes: 'Primary,Backdrop,Thumb',
@@ -278,7 +280,7 @@ function getItems(instance, params, item, sortBy, startIndex, limit) {
         return apiClient[method](apiClient.getCurrentUserId(), modifyQueryWithFilters(instance, {
             StartIndex: startIndex,
             Limit: limit,
-            Fields: 'PrimaryImageAspectRatio,SortName,Chapters,Trickplay',
+            Fields: 'PrimaryImageAspectRatio,SortName,Chapters,Trickplay' + libraryFields,
             ImageTypeLimit: 1,
             IncludeItemTypes: params.type === 'MusicArtist' || params.type === 'Person' ? null : params.type,
             Recursive: true,
@@ -294,7 +296,7 @@ function getItems(instance, params, item, sortBy, startIndex, limit) {
         const query = {
             StartIndex: startIndex,
             Limit: limit,
-            Fields: 'PrimaryImageAspectRatio,SortName',
+            Fields: 'PrimaryImageAspectRatio,SortName' + libraryFields,
             Recursive: true,
             parentId: params.parentId,
             SortBy: sortBy
@@ -326,7 +328,7 @@ function getItems(instance, params, item, sortBy, startIndex, limit) {
     const query = {
         StartIndex: startIndex,
         Limit: limit,
-        Fields: 'PrimaryImageAspectRatio,SortName,Path,ChildCount,MediaSourceCount',
+        Fields: 'PrimaryImageAspectRatio,SortName,Path,ChildCount,MediaSourceCount' + libraryFields,
         ImageTypeLimit: 1,
         ParentId: item.Id,
         SortBy: sortBy
@@ -523,7 +525,8 @@ class ItemsView {
 
             if (settings.imageType === 'list') {
                 return listView.getListViewHtml({
-                    items: items
+                    items: items,
+                    showLibraryName: !params.parentId && isLibrarySourceDetailsEnabled(params.serverId)
                 });
             }
 
@@ -560,6 +563,7 @@ class ItemsView {
             let posterOptions = {
                 shape: shape,
                 showTitle: settings.showTitle,
+                showLibraryName: !params.parentId && isLibrarySourceDetailsEnabled(params.serverId),
                 showYear: settings.showTitle,
                 centerText: true,
                 coverImage: true,

@@ -1,3 +1,4 @@
+import { isLibrarySourceDetailsEnabled } from 'utils/extensions';
 import React, { FunctionComponent } from 'react';
 
 import Loading from 'components/loading/LoadingComponent';
@@ -37,6 +38,9 @@ const SearchSuggestions: FunctionComponent<SearchSuggestionsProps> = ({ parentId
                             href={appRouter.getRouteUrl(item)}
                         >
                             {item.Name}
+                            {!parentId && isLibrarySourceDetailsEnabled() && item.LibraryName?.trim() && (
+                                <span className='secondary'> ({item.LibraryName})</span>
+                            )}
                         </LinkButton>
                     </div>
                 ))}

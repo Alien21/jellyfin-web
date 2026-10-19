@@ -3,6 +3,7 @@ import React, { type FC, useEffect, useRef } from 'react';
 
 import cardBuilder from 'components/cardbuilder/cardBuilder';
 import type { CardOptions } from 'types/cardOptions';
+import { isLibrarySourceDetailsEnabled } from 'utils/extensions';
 import 'elements/emby-scroller/emby-scroller';
 import 'elements/emby-itemscontainer/emby-itemscontainer';
 
@@ -24,17 +25,18 @@ interface SearchResultsRowProps {
 
 const SearchResultsRow: FC<SearchResultsRowProps> = ({ title, items = [], cardOptions = {} }) => {
     const element = useRef<HTMLDivElement>(null);
+    const showLibraryName = isLibrarySourceDetailsEnabled() && cardOptions.showLibraryName !== false;
 
     useEffect(() => {
         cardBuilder.buildCards(items, {
             itemsContainer: element.current?.querySelector('.itemsContainer'),
-            showLibraryName: true,
-            ...cardOptions
+            ...cardOptions,
+            showLibraryName
         });
 
         const scrollerEl = element.current?.querySelector('[is="emby-scroller"]') as (HTMLDivElement & { scroller?: { reload: () => void } }) | null;
         scrollerEl?.scroller?.reload();
-    }, [cardOptions, items]);
+    }, [cardOptions, items, showLibraryName]);
 
     return (
         <div

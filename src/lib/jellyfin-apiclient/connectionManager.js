@@ -18,6 +18,7 @@ const DEFAULT_CONNECTION_TIMEOUT = 20000;
 
 function updateServerInfo(server, systemInfo) {
     server.Name = systemInfo.ServerName;
+    server.EnableLibrarySourceDetails = systemInfo.EnableLibrarySourceDetails === true;
 
     if (systemInfo.Id) {
         server.Id = systemInfo.Id;

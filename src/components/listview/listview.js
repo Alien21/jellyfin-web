@@ -399,6 +399,10 @@ export function getListViewHtml(options) {
             textlines.push(itemHelper.getDisplayName(item.CurrentProgram));
         }
 
+        if (options.showLibraryName && item.LibraryName?.trim()) {
+            textlines.push(item.LibraryName);
+        }
+
         cssClass = 'listItemBody';
         if (!clickEntireItem) {
             cssClass += ' itemAction';

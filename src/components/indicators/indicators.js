@@ -1,3 +1,4 @@
+import { isLibrarySourceDetailsEnabled } from 'utils/extensions';
 import datetime from '../../scripts/datetime';
 import itemHelper from '../itemHelper';
 import '../../elements/emby-progressbar/emby-progressbar';
@@ -91,9 +92,10 @@ export function getPlayedIndicatorHtml(item) {
 
 export function getChildCountIndicatorHtml(item, options) {
     const minCount = options?.minCount ? options.minCount : 0;
+    const count = item.Type === 'BoxSet' && isLibrarySourceDetailsEnabled(item.ServerId) ? item.UniqueItemCount ?? item.ChildCount : item.ChildCount;
 
-    if (item.ChildCount && item.ChildCount > minCount) {
-        return '<div class="countIndicator indicator">' + formatCountIndicator(item.ChildCount) + '</div>';
+    if (count && count > minCount) {
+        return '<div class="countIndicator indicator">' + formatCountIndicator(count) + '</div>';
     }
 
     return '';

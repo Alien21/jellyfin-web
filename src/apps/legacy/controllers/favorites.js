@@ -1,3 +1,4 @@
+import { isLibrarySourceDetailsEnabled } from 'utils/extensions';
 import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client/models/base-item-kind';
 import { ImageType } from '@jellyfin/sdk/lib/generated-client/models/image-type';
 import { ItemFields } from '@jellyfin/sdk/lib/generated-client/models/item-fields';
@@ -193,7 +194,7 @@ function getFetchDataFn(section) {
             SortOrder: 'Ascending',
             Filters: 'IsFavorite',
             Recursive: true,
-            Fields: 'PrimaryImageAspectRatio',
+            Fields: 'PrimaryImageAspectRatio' + (isLibrarySourceDetailsEnabled() ? ',LibraryInfo' : ''),
             CollapseBoxSetItems: false,
             ExcludeLocationTypes: 'Virtual',
             EnableTotalRecordCount: false
@@ -274,6 +275,7 @@ function getItemsHtmlFn(section) {
             centerText: section.centerText && !cardLayout,
             overlayText: section.overlayText !== false,
             showTitle: section.showTitle,
+            showLibraryName: isLibrarySourceDetailsEnabled(),
             showYear: section.showYear,
             showParentTitle: section.showParentTitle,
             scalable: true,

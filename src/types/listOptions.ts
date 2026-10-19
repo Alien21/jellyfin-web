@@ -7,6 +7,7 @@ import { ItemAction } from 'constants/itemAction';
 import type { ItemDto } from './base/models/item-dto';
 
 export interface ListOptions extends TextLineOpts {
+    showLibraryName?: boolean;
     items?: ItemDto[] | null;
     index?: string;
     showIndex?: boolean;

@@ -1,3 +1,4 @@
+import { isLibrarySourceDetailsEnabled } from 'utils/extensions';
 import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client/models/base-item-kind';
 
 import listView from 'components/listview/listview';
@@ -330,6 +331,7 @@ function loadItems(element, item, type, query, listOptions) {
         }
 
         listOptions.items = result.Items;
+        listOptions.showLibraryName = isLibrarySourceDetailsEnabled(item.ServerId);
         const itemsContainer = element.querySelector('.itemsContainer');
 
         if (type === 'Audio') {
@@ -399,7 +401,7 @@ function getQuery(options, item) {
         SortOrder: 'Ascending',
         IncludeItemTypes: '',
         Recursive: true,
-        Fields: 'ParentId,PrimaryImageAspectRatio',
+        Fields: 'ParentId,PrimaryImageAspectRatio' + (isLibrarySourceDetailsEnabled(item.ServerId) ? ',LibraryInfo' : ''),
         Limit: 100,
         StartIndex: 0,
         CollapseBoxSetItems: false

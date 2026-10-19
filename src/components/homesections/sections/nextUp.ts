@@ -1,3 +1,4 @@
+import { isLibrarySourceDetailsEnabled } from 'utils/extensions';
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client/models/base-item-dto';
 import { ImageType } from '@jellyfin/sdk/lib/generated-client/models/image-type';
 import { ItemFields } from '@jellyfin/sdk/lib/generated-client/models/item-fields';
@@ -33,7 +34,8 @@ function getNextUpFetchFn(
                     ItemFields.PrimaryImageAspectRatio,
                     ItemFields.DateCreated,
                     ItemFields.Path,
-                    ItemFields.MediaSourceCount
+                    ItemFields.MediaSourceCount,
+                    ...(isLibrarySourceDetailsEnabled() ? ['LibraryInfo' as ItemFields] : [])
                 ],
                 imageTypeLimit: 1,
                 enableImageTypes: [
@@ -63,6 +65,7 @@ function getNextUpItemsHtmlFn(
             overlayText: false,
             showTitle: true,
             showParentTitle: true,
+            showLibraryName: isLibrarySourceDetailsEnabled(),
             lazy: true,
             overlayPlayButton: true,
             context: 'home',

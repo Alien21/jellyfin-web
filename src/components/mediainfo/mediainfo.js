@@ -1,3 +1,4 @@
+import { isLibrarySourceDetailsEnabled } from 'utils/extensions';
 import escapeHtml from 'escape-html';
 import datetime from '../../scripts/datetime';
 import globalize from '../../lib/globalize';
@@ -122,7 +123,7 @@ export function getMediaInfoHtml(item, options = {}) {
             miscInfo.push(datetime.getDisplayDuration(item.RunTimeTicks));
         }
     } else if (item.Type === 'PhotoAlbum' || item.Type === 'BoxSet') {
-        count = item.ChildCount;
+        count = item.Type === 'BoxSet' && isLibrarySourceDetailsEnabled(item.ServerId) ? item.UniqueItemCount ?? item.ChildCount : item.ChildCount;
 
         if (count) {
             miscInfo.push(globalize.translate('ItemCount', count));

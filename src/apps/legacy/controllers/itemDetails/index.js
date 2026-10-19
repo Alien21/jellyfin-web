@@ -1,3 +1,4 @@
+import { isLibrarySourceDetailsEnabled } from 'utils/extensions';
 import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client/models/base-item-kind';
 import { ItemFields } from '@jellyfin/sdk/lib/generated-client/models/item-fields';
 import { PersonKind } from '@jellyfin/sdk/lib/generated-client/models/person-kind';
@@ -1254,7 +1255,7 @@ function renderSimilarItems(page, item, context) {
         const options = {
             userId: apiClient.getCurrentUserId(),
             limit: 12,
-            fields: 'PrimaryImageAspectRatio,CanDelete'
+            fields: 'PrimaryImageAspectRatio,CanDelete' + (isLibrarySourceDetailsEnabled(item.ServerId) ? ',LibraryInfo' : '')
         };
 
         if (item.Type == 'MusicAlbum' && item.AlbumArtists && item.AlbumArtists.length) {
@@ -1273,6 +1274,7 @@ function renderSimilarItems(page, item, context) {
                 items: result.Items,
                 shape: 'autooverflow',
                 showParentTitle: item.Type == 'MusicAlbum',
+                showLibraryName: isLibrarySourceDetailsEnabled(item.ServerId),
                 centerText: true,
                 showTitle: true,
                 context: context,
@@ -1353,6 +1355,9 @@ function renderChildren(page, item) {
     const childrenItemsContainer = childrenCollapsible.querySelector('.itemsContainer');
 
     let fields = 'ItemCounts,PrimaryImageAspectRatio,CanDelete,MediaSourceCount';
+    if (item.Type === 'BoxSet' && isLibrarySourceDetailsEnabled(item.ServerId)) {
+        fields += ',LibraryInfo';
+    }
     const query = {
         ParentId: item.Id,
         Fields: fields
@@ -1757,6 +1762,7 @@ function renderCollectionItemType(page, parentItem, type, items) {
         items: items,
         shape: shape,
         showTitle: true,
+        showLibraryName: isLibrarySourceDetailsEnabled(parentItem.ServerId),
         showYear: type.mediaType === 'Video' || type.type === 'Series' || type.type === 'Movie',
         centerText: true,
         lazy: true,

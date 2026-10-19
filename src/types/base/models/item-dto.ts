@@ -23,6 +23,7 @@ export interface ItemDto extends BaseItem, TimerInfo, SeriesTimerInfo, SearchHin
     'Name'?: string | null;
     'LibraryId'?: string | null;
     'LibraryName'?: string | null;
+    'UniqueItemCount'?: number | null;
     'ItemId'?: string | null;
     'ProgramInfo'?: ItemDto;
     'CurrentProgram'?: ItemDto;

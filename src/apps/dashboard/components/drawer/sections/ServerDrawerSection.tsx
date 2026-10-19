@@ -1,6 +1,7 @@
 import Dashboard from '@mui/icons-material/Dashboard';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import Extension from '@mui/icons-material/Extension';
 import LibraryAdd from '@mui/icons-material/LibraryAdd';
 import Palette from '@mui/icons-material/Palette';
 import People from '@mui/icons-material/People';
@@ -74,6 +75,14 @@ const ServerDrawerSection = () => {
                         <Settings />
                     </ListItemIcon>
                     <ListItemText primary={globalize.translate('General')} />
+                </ListItemLink>
+            </ListItem>
+            <ListItem disablePadding>
+                <ListItemLink to='/dashboard/extensions'>
+                    <ListItemIcon>
+                        <Extension />
+                    </ListItemIcon>
+                    <ListItemText primary={globalize.translate('Extensions')} />
                 </ListItemLink>
             </ListItem>
             <ListItemLink to='/dashboard/branding'>

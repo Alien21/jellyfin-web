@@ -1,3 +1,4 @@
+import { isLibrarySourceDetailsEnabled } from 'utils/extensions';
 import { LocationType } from '@jellyfin/sdk/lib/generated-client/models/location-type';
 import React from 'react';
 import Box from '@mui/material/Box';
@@ -138,7 +139,9 @@ const useIndicator = (item: ItemDto) => {
     };
 
     const getChildCountIndicator = () => {
-        const childCount = item.ChildCount ?? 0;
+        const childCount = (item.Type === ItemKind.BoxSet && isLibrarySourceDetailsEnabled(item.ServerId) ? item.UniqueItemCount : null)
+            ?? item.ChildCount
+            ?? 0;
 
         if (childCount > 1) {
             return (
