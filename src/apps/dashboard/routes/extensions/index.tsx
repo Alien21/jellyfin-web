@@ -26,6 +26,7 @@ type ExtensionsConfiguration = ServerConfiguration & {
     EnableGlobalSearch?: boolean;
     EnableLibrarySourceDetails?: boolean;
     EnablePlaybackVersionSelection?: boolean;
+    EnableFavoriteSyncAcrossLibraries?: boolean;
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -41,6 +42,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     config.EnableLibrarySourceDetails = enabled;
     const playbackVersionSelectionEnabled = formData.get('EnablePlaybackVersionSelection')?.toString() === 'on';
     config.EnablePlaybackVersionSelection = playbackVersionSelectionEnabled;
+    config.EnableFavoriteSyncAcrossLibraries = formData.get('EnableFavoriteSyncAcrossLibraries')?.toString() === 'on';
 
     await getSystemApi(api).updateConfiguration({ serverConfiguration: config });
     setGlobalSearchEnabled(globalSearchEnabled);
@@ -132,6 +134,24 @@ export const Component = () => {
                                 />
                                 <FormHelperText id='globalSearchHelp'>
                                     {globalize.translate('EnableGlobalSearchHelp')}
+                                </FormHelperText>
+                            </FormControl>
+
+                            <FormControl disabled={isSubmitting}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            name='EnableFavoriteSyncAcrossLibraries'
+                                            defaultChecked={config?.EnableFavoriteSyncAcrossLibraries ?? false}
+                                            slotProps={{
+                                                input: { 'aria-describedby': 'favoriteSyncAcrossLibrariesHelp' }
+                                            }}
+                                        />
+                                    }
+                                    label={globalize.translate('EnableFavoriteSyncAcrossLibraries')}
+                                />
+                                <FormHelperText id='favoriteSyncAcrossLibrariesHelp'>
+                                    {globalize.translate('EnableFavoriteSyncAcrossLibrariesHelp')}
                                 </FormHelperText>
                             </FormControl>
 

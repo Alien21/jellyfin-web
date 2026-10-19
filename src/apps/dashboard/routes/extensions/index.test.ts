@@ -32,8 +32,14 @@ vi.mock('components/loading/LoadingComponent', () => ({ default: () => null }));
 vi.mock('hooks/useConfiguration', () => ({ useConfiguration: vi.fn() }));
 vi.mock('lib/globalize', () => ({ default: { translate: (key: string) => key } }));
 
-function submit(playbackVersionSelection: boolean, librarySourceDetails: boolean, globalSearch = false) {
+function submit(
+    playbackVersionSelection: boolean,
+    librarySourceDetails: boolean,
+    globalSearch = false,
+    favoriteSyncAcrossLibraries = false
+) {
     const formData = new FormData();
+    if (favoriteSyncAcrossLibraries) formData.set('EnableFavoriteSyncAcrossLibraries', 'on');
     if (globalSearch) formData.set('EnableGlobalSearch', 'on');
     if (playbackVersionSelection) formData.set('EnablePlaybackVersionSelection', 'on');
     if (librarySourceDetails) formData.set('EnableLibrarySourceDetails', 'on');
@@ -54,6 +60,7 @@ describe('Extensions settings save', () => {
         expect(mocks.updateConfiguration).toHaveBeenCalledWith({
             serverConfiguration: {
                 ServerName: 'My server',
+                EnableFavoriteSyncAcrossLibraries: false,
                 EnableGlobalSearch: false,
                 EnableLibrarySourceDetails: true,
                 EnablePlaybackVersionSelection: enabled
@@ -70,6 +77,7 @@ describe('Extensions settings save', () => {
         expect(mocks.updateConfiguration).toHaveBeenCalledWith({
             serverConfiguration: {
                 ServerName: 'My server',
+                EnableFavoriteSyncAcrossLibraries: false,
                 EnableGlobalSearch: enabled,
                 EnableLibrarySourceDetails: true,
                 EnablePlaybackVersionSelection: false
@@ -78,6 +86,28 @@ describe('Extensions settings save', () => {
         expect(mocks.setGlobalSearchEnabled).toHaveBeenCalledWith(enabled);
         expect(mocks.updateConfiguration.mock.invocationCallOrder[0])
             .toBeLessThan(mocks.setGlobalSearchEnabled.mock.invocationCallOrder[0]);
+    });
+
+    test.each([true, false])('persists favorite synchronization as %s without replacing unrelated configuration', async enabled => {
+        mocks.getConfiguration.mockResolvedValue({
+            data: {
+                ServerName: 'My server',
+                EnableFavoriteSyncAcrossLibraries: !enabled
+            }
+        });
+
+        await expect(submit(false, true, false, enabled)).resolves.toEqual({ isSaved: true });
+
+        expect(mocks.updateConfiguration).toHaveBeenCalledWith({
+            serverConfiguration: {
+                ServerName: 'My server',
+                EnableGlobalSearch: false,
+                EnableLibrarySourceDetails: true,
+                EnablePlaybackVersionSelection: false,
+                EnableFavoriteSyncAcrossLibraries: enabled
+            }
+        });
+        expect(mocks.invalidateQueries).toHaveBeenCalledOnce();
     });
 
     test('does not change runtime capabilities when the server rejects the save', async () => {
