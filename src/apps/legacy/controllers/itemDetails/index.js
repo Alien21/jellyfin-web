@@ -24,6 +24,7 @@ import listView from 'components/listview/listview';
 import loading from 'components/loading/loading';
 import ItemDetailsMetadataList from 'components/itemDetails/ItemDetailsMetadataList';
 import { playbackManager } from 'components/playback/playbackmanager';
+import { canSelectPlaybackVersion, selectPlaybackVersion } from 'components/playback/versionSelection';
 import { appRouter } from 'components/router/appRouter';
 import itemShortcuts from 'components/shortcuts';
 import { AppFeature } from 'constants/appFeature';
@@ -366,6 +367,10 @@ function reloadPlayButtons(page, item) {
         hideAll(page, 'btnInstantMix');
         hideAll(page, 'btnShuffle');
     }
+
+    hideAll(page, 'btnPlayVersion', layoutManager.tv && canPlay
+        && playbackManager.getSupportedCommands().includes('PlayMediaSource')
+        && canSelectPlaybackVersion(item));
 
     return canPlay;
 }
@@ -2014,6 +2019,22 @@ export default function (view, params) {
         playCurrentItem(actionElem, action);
     }
 
+    async function onPlayVersionClick() {
+        const items = [currentItem];
+        const options = {
+            ...getPlayOptions(0),
+            showVersionSelection: true
+        };
+
+        if (await selectPlaybackVersion(items, options)) {
+            playbackManager.play({
+                ...options,
+                items,
+                skipVersionSelection: true
+            });
+        }
+    }
+
     function onInstantMixClick() {
         playbackManager.instantMix(currentItem);
     }
@@ -2119,6 +2140,7 @@ export default function (view, params) {
         self._unmount = [];
 
         bindAll(view, '.btnPlay', 'click', onPlayClick);
+        bindAll(view, '.btnPlayVersion', 'click', onPlayVersionClick);
         bindAll(view, '.btnReplay', 'click', onPlayClick);
         bindAll(view, '.btnInstantMix', 'click', onInstantMixClick);
         bindAll(view, '.btnShuffle', 'click', onShuffleClick);

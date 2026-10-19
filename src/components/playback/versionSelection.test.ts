@@ -2,7 +2,7 @@ import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client/models/base
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 import type { PlayOptions } from 'types/playOptions';
-import { selectPlaybackVersion as selectVersionForItems } from './versionSelection';
+import { canSelectPlaybackVersion, selectPlaybackVersion as selectVersionForItems } from './versionSelection';
 
 const mocks = vi.hoisted(() => ({
     enabled: vi.fn(),
@@ -104,6 +104,41 @@ describe('playback version selection', () => {
 
         expect(mocks.getApiClient).not.toHaveBeenCalled();
         expect(mocks.show).not.toHaveBeenCalled();
+    });
+
+    test.each(['Movie', 'Episode'] as const)('opens the TV chooser for an explicit version-play request for a %s', async Type => {
+        mocks.layout.tv = true;
+        const items = [makeItem({ Type })];
+        const options: PlayOptions = { showVersionSelection: true, startPositionTicks: 0 };
+
+        await expect(selectVersionForItems(items, options)).resolves.toBe(true);
+
+        expect(mocks.show).toHaveBeenCalledOnce();
+        expect(items[0].Id).toBe('alternate');
+        expect(options.mediaSourceId).toBe('alternate');
+    });
+
+    test('keeps explicit TV version selection behind the shared server extension', async () => {
+        mocks.layout.tv = true;
+        mocks.enabled.mockReturnValue(false);
+
+        await expect(selectPlaybackVersion(makeItem(), { showVersionSelection: true })).resolves.toBe(true);
+
+        expect(mocks.show).not.toHaveBeenCalled();
+        expect(mocks.getApiClient).not.toHaveBeenCalled();
+    });
+
+    test('cancels an explicit TV version launch without changing the item or options', async () => {
+        mocks.layout.tv = true;
+        mocks.show.mockRejectedValue(new Error('ActionSheet closed without resolving'));
+        const item = makeItem();
+        const items = [item];
+        const options: PlayOptions = { showVersionSelection: true, startPositionTicks: 0 };
+
+        await expect(selectVersionForItems(items, options)).resolves.toBe(false);
+
+        expect(items[0]).toBe(item);
+        expect(options).toEqual({ showVersionSelection: true, startPositionTicks: 0 });
     });
 
     test('does not reopen the chooser for a received remote playback command', async () => {
@@ -324,5 +359,32 @@ describe('playback version selection', () => {
         expect(mocks.show).toHaveBeenCalledOnce();
         expect(mocks.getItem).toHaveBeenCalledWith('viewer', 'alternate');
         expect(items[0]).toBe(item);
+    });
+});
+
+describe('detail-page version availability', () => {
+    test.each(['Movie', 'Episode'] as const)('offers a version button for a %s with multiple sources', Type => {
+        expect(canSelectPlaybackVersion(makeItem({ Type }))).toBe(true);
+        expect(mocks.enabled).toHaveBeenCalledWith('item-server');
+    });
+
+    test('hides the version button when the shared server extension is disabled', () => {
+        mocks.enabled.mockReturnValue(false);
+
+        expect(canSelectPlaybackVersion(makeItem())).toBe(false);
+    });
+
+    const unavailableItems: Partial<BaseItemDto>[] = [
+        { Id: undefined },
+        { Type: 'Series' },
+        { Type: 'Audio' },
+        { MediaSources: undefined },
+        { MediaSources: [] },
+        { MediaSources: [sources[0]] },
+        { MediaSources: [sources[0], { Name: 'Unplayable source without an ID' }] }
+    ];
+
+    test.each(unavailableItems)('hides the version button when no playable version choice is available (%j)', overrides => {
+        expect(canSelectPlaybackVersion(makeItem(overrides))).toBe(false);
     });
 });

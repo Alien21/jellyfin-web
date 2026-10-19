@@ -19,6 +19,8 @@ export interface PlayOptions {
     startPositionTicks?: number
     /** Whether a launch already requested by another device should bypass version selection */
     skipVersionSelection?: boolean
+    /** Whether the explicit version-play button should open the chooser in TV layout */
+    showVersionSelection?: boolean
     /** The index of the subtitle stream to play */
     subtitleStreamIndex?: number
 }

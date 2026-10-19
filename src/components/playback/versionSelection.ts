@@ -10,15 +10,28 @@ import type { PlayOptions } from 'types/playOptions';
 import { isPlaybackVersionSelectionEnabled } from 'utils/extensions';
 import { getVersionStreamSelection } from './versionStreamSelection';
 
+/** Whether a detail page can offer a choice of playable movie/episode versions. */
+export function canSelectPlaybackVersion(item: BaseItemDto): boolean {
+    return !!item.Id
+        && (item.Type === BaseItemKind.Movie || item.Type === BaseItemKind.Episode)
+        && isPlaybackVersionSelectionEnabled(item.ServerId)
+        && (item.MediaSources || []).filter(source => source.Id).length > 1;
+}
+
+function shouldSkipVersionSelection(options: PlayOptions): boolean {
+    return (layoutManager.tv && !options.showVersionSelection)
+        || !!options.skipVersionSelection
+        || (options.startPositionTicks || 0) > 0;
+}
+
 /** Select a version after a series/season has been resolved to its starting episode. */
 export async function selectPlaybackVersion(items: BaseItemDto[], options: PlayOptions): Promise<boolean> {
-    const startIndex = items[options.startIndex || 0] ? options.startIndex || 0 : 0;
+    const requestedIndex = options.startIndex ?? 0;
+    const startIndex = items[requestedIndex] ? requestedIndex : 0;
     const item = items[startIndex];
     if (!item?.Id
         || (item.Type !== BaseItemKind.Movie && item.Type !== BaseItemKind.Episode)
-        || layoutManager.tv
-        || options.skipVersionSelection
-        || (options.startPositionTicks || 0) > 0
+        || shouldSkipVersionSelection(options)
         || !isPlaybackVersionSelectionEnabled(item.ServerId)) {
         return true;
     }
