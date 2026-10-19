@@ -39,6 +39,8 @@
     "AlwaysBurnInSubtitleWhenTranscodingHelp": "Burn in all subtitles when transcoding is triggered. This ensures subtitle synchronization after transcoding at the cost of reduced transcoding speed.",
     "EnableLibrarySourceDetails": "Show library names and unique collection counts",
     "EnableLibrarySourceDetailsHelp": "Shows library names for items in shared views and counts each movie once in collections. Refresh already open pages after changing this setting.",
+    "EnableGlobalSearch": "Always search all libraries",
+    "EnableGlobalSearchHelp": "The search button searches all accessible libraries, including when opened from inside a library. When disabled, search stays within the current library.",
     "EnablePlaybackVersionSelection": "Choose a version before playback",
     "EnablePlaybackVersionSelectionHelp": "Shows a version chooser before playback in computer and mobile layouts when multiple versions are available. Continue watching resumes without this prompt.",
     "Extensions": "Extensions",

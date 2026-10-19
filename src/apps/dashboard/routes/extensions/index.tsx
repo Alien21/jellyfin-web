@@ -18,10 +18,11 @@ import { useConfiguration } from 'hooks/useConfiguration';
 import globalize from 'lib/globalize';
 import { ServerConnections } from 'lib/jellyfin-apiclient';
 import type { ActionData } from 'types/actionData';
-import { setLibrarySourceDetailsEnabled, setPlaybackVersionSelectionEnabled } from 'utils/extensions';
+import { setGlobalSearchEnabled, setLibrarySourceDetailsEnabled, setPlaybackVersionSelectionEnabled } from 'utils/extensions';
 import { queryClient } from 'utils/query/queryClient';
 
 type ExtensionsConfiguration = ServerConfiguration & {
+    EnableGlobalSearch?: boolean;
     EnableLibrarySourceDetails?: boolean;
     EnablePlaybackVersionSelection?: boolean;
 };
@@ -33,12 +34,15 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const { data } = await getSystemApi(api).getConfiguration();
     const config = data as ExtensionsConfiguration;
     const formData = await request.formData();
+    const globalSearchEnabled = formData.get('EnableGlobalSearch')?.toString() === 'on';
+    config.EnableGlobalSearch = globalSearchEnabled;
     const enabled = formData.get('EnableLibrarySourceDetails')?.toString() === 'on';
     config.EnableLibrarySourceDetails = enabled;
     const playbackVersionSelectionEnabled = formData.get('EnablePlaybackVersionSelection')?.toString() === 'on';
     config.EnablePlaybackVersionSelection = playbackVersionSelectionEnabled;
 
     await getSystemApi(api).updateConfiguration({ serverConfiguration: config });
+    setGlobalSearchEnabled(globalSearchEnabled);
     setLibrarySourceDetailsEnabled(enabled);
     setPlaybackVersionSelectionEnabled(playbackVersionSelectionEnabled);
     void queryClient.invalidateQueries();
@@ -108,6 +112,24 @@ export const Component = () => {
                                 />
                                 <FormHelperText id='playbackVersionSelectionHelp'>
                                     {globalize.translate('EnablePlaybackVersionSelectionHelp')}
+                                </FormHelperText>
+                            </FormControl>
+
+                            <FormControl disabled={isSubmitting}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            name='EnableGlobalSearch'
+                                            defaultChecked={config?.EnableGlobalSearch ?? false}
+                                            slotProps={{
+                                                input: { 'aria-describedby': 'globalSearchHelp' }
+                                            }}
+                                        />
+                                    }
+                                    label={globalize.translate('EnableGlobalSearch')}
+                                />
+                                <FormHelperText id='globalSearchHelp'>
+                                    {globalize.translate('EnableGlobalSearchHelp')}
                                 </FormHelperText>
                             </FormControl>
 

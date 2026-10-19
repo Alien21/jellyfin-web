@@ -7,7 +7,7 @@ import SearchResultsRow from 'apps/legacy/features/search/components/SearchResul
 import { loadResume } from 'components/homesections/sections/resume';
 import type { SectionContainerElement } from 'components/homesections/sections/section';
 import type { UserSettings } from 'scripts/settings/userSettings';
-import { isLibrarySourceDetailsEnabled, isPlaybackVersionSelectionEnabled, setLibrarySourceDetailsEnabled, setPlaybackVersionSelectionEnabled } from './extensions';
+import { isGlobalSearchEnabled, setGlobalSearchEnabled, isLibrarySourceDetailsEnabled, isPlaybackVersionSelectionEnabled, setLibrarySourceDetailsEnabled, setPlaybackVersionSelectionEnabled } from './extensions';
 
 const mocks = vi.hoisted(() => ({
     currentApiClient: vi.fn(),
@@ -46,7 +46,7 @@ vi.mock('lib/globalize', () => ({ default: { translate: (key: string) => key } }
 vi.mock('elements/emby-scroller/emby-scroller', () => ({}));
 vi.mock('elements/emby-itemscontainer/emby-itemscontainer', () => ({}));
 
-type ServerInfo = { Id: string; EnableLibrarySourceDetails?: boolean; EnablePlaybackVersionSelection?: boolean };
+type ServerInfo = { Id: string; EnableGlobalSearch?: boolean; EnableLibrarySourceDetails?: boolean; EnablePlaybackVersionSelection?: boolean };
 
 function createClient(id: string, enabled?: boolean) {
     let info: ServerInfo = { Id: id, EnableLibrarySourceDetails: enabled };
@@ -200,6 +200,37 @@ describe('playback version selection server capability', () => {
 
         expect(() => setPlaybackVersionSelectionEnabled(true)).not.toThrow();
         expect(currentClient.updateServerInfo).not.toHaveBeenCalled();
+    });
+});
+
+describe('global search server capability', () => {
+    test('keeps scoped search on an older server and without a connection', () => {
+        expect(isGlobalSearchEnabled()).toBe(false);
+        mocks.currentApiClient.mockReturnValue(undefined);
+        expect(isGlobalSearchEnabled()).toBe(false);
+        expect(() => setGlobalSearchEnabled(true)).not.toThrow();
+        expect(currentClient.updateServerInfo).not.toHaveBeenCalled();
+    });
+
+    test('uses the current server by default and isolates explicitly requested servers', () => {
+        otherClient.serverInfo({ Id: 'other', EnableGlobalSearch: true });
+        expect(isGlobalSearchEnabled()).toBe(false);
+        expect(isGlobalSearchEnabled('other')).toBe(true);
+        expect(isGlobalSearchEnabled('missing')).toBe(false);
+        mocks.currentApiClient.mockReturnValue(otherClient);
+        expect(isGlobalSearchEnabled(null)).toBe(true);
+    });
+
+    test.each([true, false])('persists global search %s without changing other capabilities', enabled => {
+        currentClient.serverInfo({ Id: 'current', EnablePlaybackVersionSelection: true });
+        setGlobalSearchEnabled(enabled);
+        expect(isGlobalSearchEnabled()).toBe(enabled);
+        expect(isPlaybackVersionSelectionEnabled()).toBe(true);
+        expect(currentClient.updateServerInfo).toHaveBeenLastCalledWith(
+            { Id: 'current', EnablePlaybackVersionSelection: true, EnableGlobalSearch: enabled },
+            'https://current.example'
+        );
+        expect(otherClient.updateServerInfo).not.toHaveBeenCalled();
     });
 });
 

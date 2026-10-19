@@ -1,3 +1,4 @@
+import { getSearchUrl } from 'utils/search';
 import cardBuilder from 'components/cardbuilder/cardBuilder';
 import { getSquareShape } from 'components/cardbuilder/utils/shape';
 import imageLoader from 'components/images/imageLoader';
@@ -348,7 +349,7 @@ export default function (view, params) {
     function onInputCommand(e) {
         if (e.detail.command === 'search') {
             e.preventDefault();
-            Dashboard.navigate('search?collectionType=music&parentId=' + params.topParentId);
+            Dashboard.navigate(getSearchUrl({ parentId: params.topParentId, collectionType: 'music' }));
         }
     }
 

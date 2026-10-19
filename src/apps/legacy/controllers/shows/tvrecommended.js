@@ -1,3 +1,4 @@
+import { getSearchUrl } from 'utils/search';
 import autoFocuser from 'components/autoFocuser';
 import cardBuilder from 'components/cardbuilder/cardBuilder';
 import { getBackdropShape } from 'components/cardbuilder/utils/shape';
@@ -334,7 +335,7 @@ export default function (view, params) {
     function onInputCommand(e) {
         if (e.detail.command === 'search') {
             e.preventDefault();
-            Dashboard.navigate(`search?collectionType=${CollectionType.Tvshows}&parentId=${params.topParentId}`);
+            Dashboard.navigate(getSearchUrl({ parentId: params.topParentId, collectionType: CollectionType.Tvshows }));
         }
     }
 

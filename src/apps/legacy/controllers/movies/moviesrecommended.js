@@ -1,3 +1,4 @@
+import { getSearchUrl } from 'utils/search';
 import escapeHtml from 'escape-html';
 
 import cardBuilder from 'components/cardbuilder/cardBuilder';
@@ -359,7 +360,7 @@ export default function (view, params) {
     function onInputCommand(e) {
         if (e.detail.command === 'search') {
             e.preventDefault();
-            Dashboard.navigate('search?collectionType=movies&parentId=' + params.topParentId);
+            Dashboard.navigate(getSearchUrl({ parentId: params.topParentId, collectionType: 'movies' }));
         }
     }
 

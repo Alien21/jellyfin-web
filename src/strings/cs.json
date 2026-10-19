@@ -94,6 +94,8 @@
     "Default": "Výchozí",
     "EnableLibrarySourceDetails": "Zobrazovat názvy knihoven a jedinečné počty v kolekcích",
     "EnableLibrarySourceDetailsHelp": "Zobrazí názvy knihoven u položek ve společných přehledech a započítá každý film v kolekci jen jednou. Po změně obnovte již otevřené stránky.",
+    "EnableGlobalSearch": "Vždy hledat ve všech knihovnách",
+    "EnableGlobalSearchHelp": "Tlačítko hledání prohledá všechny přístupné knihovny, i když je otevřené uvnitř knihovny. Při vypnutí zůstane hledání omezené na aktuální knihovnu.",
     "EnablePlaybackVersionSelection": "Vybrat verzi před přehráváním",
     "EnablePlaybackVersionSelectionHelp": "Před přehráváním nabídne výběr z dostupných verzí v počítačovém a mobilním rozhraní. Pokračování ve sledování se spustí bez této nabídky.",
     "ErrorDefault": "Došlo k chybě při zpracování požadavku. Prosím zkuste to znovu později.",

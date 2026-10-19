@@ -1,3 +1,4 @@
+import { getSearchUrl } from 'utils/search';
 import cardBuilder from 'components/cardbuilder/cardBuilder';
 import { getBackdropShape, getPortraitShape } from 'components/cardbuilder/utils/shape';
 import imageLoader from 'components/images/imageLoader';
@@ -323,7 +324,7 @@ export default function (view, params) {
     function onInputCommand(evt) {
         if (evt.detail.command === 'search') {
             evt.preventDefault();
-            Dashboard.navigate('search?collectionType=livetv');
+            Dashboard.navigate(getSearchUrl({ collectionType: 'livetv' }));
         }
     }
 
