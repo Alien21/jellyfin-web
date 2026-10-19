@@ -26,6 +26,7 @@ vi.mock('utils/extensions', () => ({
     setPlaybackVersionSelectionEnabled: mocks.setPlaybackVersionSelectionEnabled
 }));
 vi.mock('utils/query/queryClient', () => ({ queryClient: { invalidateQueries: mocks.invalidateQueries } }));
+vi.mock('components/layoutManager', () => ({ default: { tv: false } }));
 vi.mock('components/Page', () => ({ default: () => null }));
 vi.mock('components/loading/LoadingComponent', () => ({ default: () => null }));
 vi.mock('hooks/useConfiguration', () => ({ useConfiguration: vi.fn() }));

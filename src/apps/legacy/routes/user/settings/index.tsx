@@ -254,7 +254,7 @@ const UserSettingsPage: FC = () => {
                         )}
                     </div>
 
-                    {isLoggedInUser && user.Policy?.IsAdministrator && !layoutManager.tv && (
+                    {isLoggedInUser && user.Policy?.IsAdministrator && (
                         <div className='adminSection verticalSection verticalSection-extrabottompadding'>
                             <h2
                                 className='sectionTitle headerUsername'
@@ -283,6 +283,27 @@ const UserSettingsPage: FC = () => {
                                     </div>
                                 </div>
                             </LinkButton>
+
+                            {layoutManager.tv && (
+                                <LinkButton
+                                    href='#/dashboard/extensions'
+                                    className='lnkExtensions listItem-border'
+                                    style={{
+                                        display: 'block',
+                                        margin: 0,
+                                        padding: 0
+                                    }}
+                                >
+                                    <div className='listItem'>
+                                        <span className='material-icons listItemIcon listItemIcon-transparent extension' aria-hidden='true' />
+                                        <div className='listItemBody'>
+                                            <div className='listItemBodyText'>
+                                                {globalize.translate('Extensions')}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </LinkButton>
+                            )}
 
                             <LinkButton
                                 href='#/metadata'

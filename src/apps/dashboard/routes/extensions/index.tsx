@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import React from 'react';
 import { type ActionFunctionArgs, Form, useActionData, useNavigation } from 'react-router-dom';
 
+import layoutManager from 'components/layoutManager';
 import Loading from 'components/loading/LoadingComponent';
 import Page from 'components/Page';
 import { useConfiguration } from 'hooks/useConfiguration';
@@ -64,6 +65,7 @@ export const Component = () => {
             id='dashboardExtensionsPage'
             title={globalize.translate('Extensions')}
             className='type-interior mainAnimatedPage'
+            shouldAutoFocus={layoutManager.tv}
         >
             <Box className='content-primary'>
                 {isError ? (
