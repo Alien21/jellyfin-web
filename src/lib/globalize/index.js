@@ -174,7 +174,9 @@ export function register(options) {
 
 export function loadStrings(options) {
     const locale = getCurrentLocale();
-    const promises = [ensureLanguageNames(locale || FALLBACK_CULTURE)];
+    // Optional language names must not delay translations or prevent the app from starting.
+    ensureLanguageNames(locale || FALLBACK_CULTURE).catch(error => console.error('Language names failed to load', error));
+    const promises = [];
     let optionsName;
     if (typeof options === 'string') {
         optionsName = options;

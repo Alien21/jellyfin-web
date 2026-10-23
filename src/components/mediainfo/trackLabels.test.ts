@@ -178,6 +178,12 @@ describe('missing and unsupported track metadata', () => {
         expect(getTrackLabel(subtitle({ LocalizedLanguage: 'Czech' }), 'Subtitle').name).toBe('cs (SRT)');
     });
 
+    test('keeps subtitle and audio menus usable when Intl is unavailable', () => {
+        vi.stubGlobal('Intl', undefined);
+        expect(getTrackLabel(subtitle(), 'Subtitle').name).toBe('cs (SRT)');
+        expect(getTrackLabel(audio(), 'Audio').name).toBe('en (Dolby Digital 5.1)');
+    });
+
     test('keeps malformed language metadata from preventing the menu from opening', () => {
         expect(() => getTrackLabel(subtitle({ Language: 'invalid language', LocalizedLanguage: 'Čeština' }), 'Subtitle'))
             .not.toThrow();

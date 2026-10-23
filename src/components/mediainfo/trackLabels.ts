@@ -45,7 +45,9 @@ function getLanguageName(stream: MediaStream): string {
     parts[0] = languageAliases[base] || base;
     const language = parts.join('-');
     const locale = globalize.getCurrentLocale() || 'en-us';
-    const DisplayNames = (Intl as typeof Intl & { DisplayNames?: DisplayNamesConstructor }).DisplayNames;
+    const DisplayNames = typeof Intl === 'undefined' ?
+        undefined :
+        (Intl as typeof Intl & { DisplayNames?: DisplayNamesConstructor }).DisplayNames;
     try {
         const name = DisplayNames && new DisplayNames([locale], { type: 'language', fallback: 'code' }).of(language);
         if (name) return name.charAt(0).toLocaleUpperCase(locale) + name.slice(1);

@@ -25,7 +25,7 @@ async function loadLanguageNames(locale: string): Promise<void> {
     await import(/* webpackChunkName: "intl-displaynames-[request]" */ `@formatjs/intl-displaynames/locale-data/${dataLocale}.js`);
 }
 
-/** Load profile-language names before rendering the interface and its track menus. */
+/** Load optional profile-language names for track menus. */
 export function ensureLanguageNames(locale: string): Promise<void> {
     const next = loading.then(() => loadLanguageNames(locale.replace(/_/g, '-')));
     // A failed download must not prevent a later profile language from loading.
