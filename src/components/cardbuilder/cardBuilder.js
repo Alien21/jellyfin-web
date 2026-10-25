@@ -7,6 +7,7 @@
 import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client/models/base-item-kind';
 import { PersonKind } from '@jellyfin/sdk/lib/generated-client/models/person-kind';
 import escapeHtml from 'escape-html';
+import { getRefreshIndicatorHtml } from 'elements/emby-itemrefreshindicator/refreshProgressState';
 
 import { ItemAction } from 'constants/itemAction';
 import browser from 'scripts/browser';
@@ -920,8 +921,7 @@ function buildCard(index, item, apiClient, options) {
         }
 
         if (item.Type === BaseItemKind.CollectionFolder || item.CollectionType) {
-            const refreshClass = item.RefreshProgress ? '' : ' class="hide"';
-            indicatorsHtml += '<div is="emby-itemrefreshindicator"' + refreshClass + ' data-progress="' + (item.RefreshProgress || 0) + '" data-status="' + item.RefreshStatus + '"></div>';
+            indicatorsHtml += getRefreshIndicatorHtml(item);
             importRefreshIndicator();
         }
 

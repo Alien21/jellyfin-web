@@ -71,7 +71,8 @@ EmbyProgressRing.setProgress = function (progress) {
         this.querySelector('.animate-75-100-b').style.transform = 'rotate(' + angle + 'deg)';
     }
 
-    this.querySelector('.progressring-text').innerHTML = toPercentString(progress / 100, getCurrentDateTimeLocale());
+    this.querySelector('.progressring-text').textContent = this.getAttribute('data-label')
+        ?? toPercentString(progress / 100, getCurrentDateTimeLocale());
 };
 
 EmbyProgressRing.attachedCallback = function () {

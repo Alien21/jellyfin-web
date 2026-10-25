@@ -28,9 +28,10 @@ import { ImageType } from '@jellyfin/sdk/lib/generated-client/models/image-type'
 import dom from 'utils/dom';
 import { invalidateVirtualFolders } from '../api/invalidateVirtualFolders';
 import RefreshIndicator from 'elements/emby-itemrefreshindicator/RefreshIndicator';
+import type { RefreshItemInfo } from 'elements/emby-itemrefreshindicator/refreshProgressState';
 
 type LibraryCardProps = {
-    virtualFolder: VirtualFolderInfo;
+    virtualFolder: VirtualFolderInfo & RefreshItemInfo;
 };
 
 const LibraryCard = ({ virtualFolder }: LibraryCardProps) => {

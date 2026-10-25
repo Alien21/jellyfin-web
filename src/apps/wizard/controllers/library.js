@@ -1,4 +1,5 @@
 import escapeHtml from 'escape-html';
+import { getRefreshIndicatorHtml } from 'elements/emby-itemrefreshindicator/refreshProgressState';
 
 import { getDefaultBackgroundClass } from 'components/cardbuilder/utils/builder';
 import confirm from 'components/confirm/confirm';
@@ -296,7 +297,7 @@ function getVirtualFolderHtml(page, virtualFolder, index) {
 
     if (hasCardImageContainer) {
         html += '<div class="cardIndicators backdropCardIndicators">';
-        html += '<div is="emby-itemrefreshindicator"' + (virtualFolder.RefreshProgress || virtualFolder.RefreshStatus && virtualFolder.RefreshStatus !== 'Idle' ? '' : ' class="hide"') + ' data-progress="' + (virtualFolder.RefreshProgress || 0) + '" data-status="' + virtualFolder.RefreshStatus + '"></div>';
+        html += getRefreshIndicatorHtml(virtualFolder);
         html += '</div>';
         html += '</div>';
     }
