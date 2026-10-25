@@ -750,6 +750,10 @@
     "Recordings": "Nahrávky",
     "Refresh": "Aktualizovat",
     "RefreshDialogHelp": "Metadata se aktualizují na základě nastavení a internetových služeb, které jsou povoleny na nástěnce.",
+
+    "EnableLocalizedNfoUpdates": "Aktualizovat NFO přeloženými hodnotami",
+
+    "EnableLocalizedNfoUpdatesHelp": "Při načítání NFO nahradí nepřeložené údaje a odkazy na obrázky dostupnou variantou v preferovaném jazyce knihovny a uloží je zpět do stejného souboru. Už přeložené hodnoty a údaje bez dostupného překladu zachová.",
     "RefreshMetadata": "Aktualizovat metadata",
     "RefreshQueued": "Aktualizace zařazena do fronty.",
     "ReleaseDate": "Datum vydání",

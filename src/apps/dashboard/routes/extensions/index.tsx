@@ -31,6 +31,7 @@ type ExtensionsConfiguration = ServerConfiguration & {
     EnableFavoriteSyncAcrossLibraries?: boolean;
     EnableAutoRemoveFavoritesAfterWatching?: boolean;
     EnableNextUpResumeThreshold?: boolean;
+    EnableLocalizedNfoUpdates?: boolean;
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -53,6 +54,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     config.EnableFavoriteSyncAcrossLibraries = formData.get('EnableFavoriteSyncAcrossLibraries')?.toString() === 'on';
     config.EnableAutoRemoveFavoritesAfterWatching = formData.get('EnableAutoRemoveFavoritesAfterWatching')?.toString() === 'on';
     config.EnableNextUpResumeThreshold = formData.get('EnableNextUpResumeThreshold')?.toString() === 'on';
+    config.EnableLocalizedNfoUpdates = formData.get('EnableLocalizedNfoUpdates')?.toString() === 'on';
 
     await getSystemApi(api).updateConfiguration({ serverConfiguration: config });
     setGlobalSearchEnabled(globalSearchEnabled);
@@ -128,6 +130,24 @@ export const Component = () => {
                                 />
                                 <FormHelperText id='tmdbCollectionMatchingHelp'>
                                     {globalize.translate('EnableTmdbCollectionMatchingHelp')}
+                                </FormHelperText>
+                            </FormControl>
+
+                            <FormControl disabled={isSubmitting}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            name='EnableLocalizedNfoUpdates'
+                                            defaultChecked={config?.EnableLocalizedNfoUpdates ?? false}
+                                            slotProps={{
+                                                input: { 'aria-describedby': 'localizedNfoUpdatesHelp' }
+                                            }}
+                                        />
+                                    }
+                                    label={globalize.translate('EnableLocalizedNfoUpdates')}
+                                />
+                                <FormHelperText id='localizedNfoUpdatesHelp'>
+                                    {globalize.translate('EnableLocalizedNfoUpdatesHelp')}
                                 </FormHelperText>
                             </FormControl>
 

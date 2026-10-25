@@ -1532,6 +1532,10 @@
     "RecordSeries": "Record series",
     "Refresh": "Refresh",
     "RefreshDialogHelp": "Metadata is refreshed based on settings and internet services that are enabled in the Dashboard.",
+
+    "EnableLocalizedNfoUpdates": "Update NFO with localized metadata",
+
+    "EnableLocalizedNfoUpdatesHelp": "When reading NFO files, replaces untranslated values and artwork links with available versions in the library's preferred language and saves them to the same file. Existing translations and values without an available translation are preserved.",
     "RefreshMetadata": "Refresh metadata",
     "RefreshQueued": "Refresh queued.",
     "Regional" : "Regional",

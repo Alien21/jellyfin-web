@@ -46,7 +46,7 @@ function submit(
     favoriteSyncAcrossLibraries = false,
     autoRemoveFavoritesAfterWatching = false,
     nextUpResumeThreshold = false,
-    enhancedTracks: { subtitles?: boolean; audio?: boolean } = {}
+    enhancedTracks: { subtitles?: boolean; audio?: boolean; localizedNfoUpdates?: boolean } = {}
 ) {
     const formData = new FormData();
     if (favoriteSyncAcrossLibraries) formData.set('EnableFavoriteSyncAcrossLibraries', 'on');
@@ -57,6 +57,7 @@ function submit(
     if (globalSearch) formData.set('EnableGlobalSearch', 'on');
     if (playbackVersionSelection) formData.set('EnablePlaybackVersionSelection', 'on');
     if (librarySourceDetails) formData.set('EnableLibrarySourceDetails', 'on');
+    if (enhancedTracks.localizedNfoUpdates) formData.set('EnableLocalizedNfoUpdates', 'on');
     return action({ request: { formData: async () => formData } } as ActionFunctionArgs);
 }
 
@@ -81,6 +82,7 @@ describe('Extensions settings save', () => {
                 EnableEnhancedSubtitleSelection: false,
                 EnableEnhancedAudioSelection: false,
                 EnableGlobalSearch: false,
+                EnableLocalizedNfoUpdates: false,
                 EnableLibrarySourceDetails: true,
                 EnablePlaybackVersionSelection: enabled
             }
@@ -102,6 +104,7 @@ describe('Extensions settings save', () => {
                 EnableEnhancedSubtitleSelection: false,
                 EnableEnhancedAudioSelection: false,
                 EnableGlobalSearch: enabled,
+                EnableLocalizedNfoUpdates: false,
                 EnableLibrarySourceDetails: true,
                 EnablePlaybackVersionSelection: false
             }
@@ -133,6 +136,7 @@ describe('Extensions settings save', () => {
                 EnableEnhancedSubtitleSelection: false,
                 EnableEnhancedAudioSelection: false,
                 EnableGlobalSearch: false,
+                EnableLocalizedNfoUpdates: false,
                 EnableLibrarySourceDetails: true,
                 EnablePlaybackVersionSelection: false,
                 EnableFavoriteSyncAcrossLibraries: sync,
@@ -161,6 +165,7 @@ describe('Extensions settings save', () => {
                 EnableEnhancedSubtitleSelection: true,
                 EnableEnhancedAudioSelection: true,
                 EnableGlobalSearch: true,
+                EnableLocalizedNfoUpdates: false,
                 EnableLibrarySourceDetails: true,
                 EnablePlaybackVersionSelection: true,
                 EnableFavoriteSyncAcrossLibraries: true,
@@ -181,6 +186,20 @@ describe('Extensions settings save', () => {
         expect(mocks.setEnhancedAudioSelectionEnabled).toHaveBeenCalledWith(audio);
         expect(mocks.updateConfiguration.mock.invocationCallOrder[0]).toBeLessThan(mocks.setEnhancedSubtitleSelectionEnabled.mock.invocationCallOrder[0]);
         expect(mocks.updateConfiguration.mock.invocationCallOrder[0]).toBeLessThan(mocks.setEnhancedAudioSelectionEnabled.mock.invocationCallOrder[0]);
+    });
+
+    test.each([true, false])('persists localized NFO synchronization as %s without replacing unrelated settings', async enabled => {
+        mocks.getConfiguration.mockResolvedValue({
+            data: { ServerName: 'My server', EnableLocalizedNfoUpdates: !enabled, PreferredMetadataLanguage: 'cs' }
+        });
+
+        await expect(submit(false, false, false, false, false, false, { localizedNfoUpdates: enabled })).resolves.toEqual({ isSaved: true });
+
+        expect(mocks.updateConfiguration).toHaveBeenCalledWith({ serverConfiguration: expect.objectContaining({
+            ServerName: 'My server',
+            PreferredMetadataLanguage: 'cs',
+            EnableLocalizedNfoUpdates: enabled
+        }) });
     });
 
     test('does not change runtime capabilities when the server rejects the save', async () => {
