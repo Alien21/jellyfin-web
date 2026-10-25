@@ -1,7 +1,9 @@
-import type { ActionFunctionArgs } from 'react-router-dom';
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { act, createElement, type PropsWithChildren } from 'react';
+import { createRoot } from 'react-dom/client';
+import { type ActionFunctionArgs, createMemoryRouter, RouterProvider } from 'react-router-dom';
+import { afterAll, beforeAll, beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { action } from './index';
+import { action, Component } from './index';
 
 const mocks = vi.hoisted(() => ({
     getApi: vi.fn(),
@@ -12,6 +14,7 @@ const mocks = vi.hoisted(() => ({
     setPlaybackVersionSelectionEnabled: vi.fn(),
     setEnhancedSubtitleSelectionEnabled: vi.fn(),
     setEnhancedAudioSelectionEnabled: vi.fn(),
+    useConfiguration: vi.fn(),
     invalidateQueries: vi.fn()
 }));
 
@@ -31,9 +34,9 @@ vi.mock('utils/extensions', () => ({
 }));
 vi.mock('utils/query/queryClient', () => ({ queryClient: { invalidateQueries: mocks.invalidateQueries } }));
 vi.mock('components/layoutManager', () => ({ default: { tv: false } }));
-vi.mock('components/Page', () => ({ default: () => null }));
+vi.mock('components/Page', () => ({ default: ({ children }: PropsWithChildren) => children }));
 vi.mock('components/loading/LoadingComponent', () => ({ default: () => null }));
-vi.mock('hooks/useConfiguration', () => ({ useConfiguration: vi.fn() }));
+vi.mock('hooks/useConfiguration', () => ({ useConfiguration: mocks.useConfiguration }));
 vi.mock('lib/globalize', () => ({ default: { translate: (key: string) => key } }));
 
 function submit(
@@ -62,6 +65,7 @@ beforeEach(() => {
     mocks.getApi.mockReturnValue({});
     mocks.getConfiguration.mockResolvedValue({ data: { ServerName: 'My server' } });
     mocks.updateConfiguration.mockResolvedValue(undefined);
+    mocks.useConfiguration.mockReturnValue({ data: {}, isPending: false, isError: false });
 });
 
 describe('Extensions settings save', () => {
@@ -191,5 +195,38 @@ describe('Extensions settings save', () => {
         expect(mocks.setEnhancedSubtitleSelectionEnabled).not.toHaveBeenCalled();
         expect(mocks.setEnhancedAudioSelectionEnabled).not.toHaveBeenCalled();
         expect(mocks.invalidateQueries).not.toHaveBeenCalled();
+    });
+});
+
+describe('permanent TMDb collection matching fix', () => {
+    beforeAll(() => {
+        vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT', true);
+    });
+    afterAll(() => {
+        vi.unstubAllGlobals();
+    });
+
+    test.each([undefined, true, false])('remains checked and disabled regardless of an obsolete configuration value %s', async stored => {
+        mocks.useConfiguration.mockReturnValue({
+            data: stored === undefined ? {} : { EnableTmdbCollectionMatching: stored },
+            isPending: false,
+            isError: false
+        });
+        const router = createMemoryRouter([{ path: '/', element: createElement(Component) }]);
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+        const root = createRoot(container);
+
+        try {
+            await act(async () => root.render(createElement(RouterProvider, { router })));
+            const checkbox = container.querySelector('input[aria-describedby="tmdbCollectionMatchingHelp"]');
+            expect(checkbox).toHaveProperty('checked', true);
+            expect(checkbox).toHaveProperty('disabled', true);
+            expect(checkbox).toHaveProperty('name', '');
+        } finally {
+            await act(async () => root.unmount());
+            router.dispose();
+            container.remove();
+        }
     });
 });

@@ -1,4 +1,7 @@
 {
+    "EnableTmdbCollectionMatching": "Match collections by TMDb ID",
+    "EnableTmdbCollectionMatchingHelp": "This permanent fix matches automatic collections by TMDb ID so translated names do not create duplicate collections. It is always enabled and cannot be turned off. Applies to libraries with automatic collection creation enabled.",
+    "EnableAutoRemoveFavoritesAfterWatchingHelp": "Removes an item and its matching library copies after a new playback completion or manual watched action. Series and seasons require all available episodes to be watched or marked watched since being added to favorites; collections require all their movies and episodes. Watched items inside seasons and collections remain visible with a checkmark. Earlier watch history never removes a favorite.",
     "CinemaModeConfigurationHelp": "Cinema mode brings the theatre experience straight to your living room with the ability to play trailers and custom intros before the main feature.",
     "ColorPrimaries": "Colour primaries",
     "ColorSpace": "Colour space",

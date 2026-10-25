@@ -117,6 +117,24 @@ export const Component = () => {
                                 <FormControlLabel
                                     control={
                                         <Checkbox
+                                            checked
+                                            disabled
+                                            slotProps={{
+                                                input: { 'aria-describedby': 'tmdbCollectionMatchingHelp' }
+                                            }}
+                                        />
+                                    }
+                                    label={globalize.translate('EnableTmdbCollectionMatching')}
+                                />
+                                <FormHelperText id='tmdbCollectionMatchingHelp'>
+                                    {globalize.translate('EnableTmdbCollectionMatchingHelp')}
+                                </FormHelperText>
+                            </FormControl>
+
+                            <FormControl disabled={isSubmitting}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
                                             name='EnablePlaybackVersionSelection'
                                             defaultChecked={config?.EnablePlaybackVersionSelection ?? false}
                                             slotProps={{
