@@ -26,6 +26,7 @@ function getEditorHtml() {
     html += '<option value="scan" selected>' + globalize.translate('ScanForNewAndUpdatedFiles') + '</option>';
     html += '<option value="missing">' + globalize.translate('SearchForMissingMetadata') + '</option>';
     html += '<option value="all">' + globalize.translate('ReplaceAllMetadata') + '</option>';
+    html += '<option value="images">' + globalize.translate('RefreshImagesOnly') + '</option>';
     html += '</select>';
     html += '</div>';
 
@@ -39,9 +40,19 @@ function getEditorHtml() {
     html += '<span>' + globalize.translate('ReplaceTrickplayImages') + '</span>';
     html += '</label>';
 
-    html += '<div class="fieldDescription">';
+    html += '<div class="checkboxContainer checkboxContainer-withDescription fldIgnoreNfo">';
+    html += '<label>';
+    html += '<input type="checkbox" is="emby-checkbox" class="chkIgnoreNfo" />';
+    html += '<span>' + globalize.translate('IgnoreNfo') + '</span>';
+    html += '</label>';
+    html += '<div class="fieldDescription checkboxFieldDescription">' + globalize.translate('IgnoreNfoHelp') + '</div>';
+    html += '</div>';
+
+    html += '<div class="fieldDescription refreshModeHelp">';
     html += globalize.translate('RefreshDialogHelp');
     html += '</div>';
+
+    html += '<div class="fieldDescription hide imagesSelectionHelp" role="status">' + globalize.translate('RefreshImagesSelectionHelp') + '</div>';
 
     html += '<input type="hidden" class="fldSelectedItemIds" />';
 
@@ -65,28 +76,35 @@ function centerFocus(elem, horiz, on) {
 }
 
 function onSubmit(e) {
-    loading.show();
+    e.preventDefault();
 
     const instance = this;
     const dlg = dom.parentWithClass(e.target, 'dialog');
     const options = instance.options;
 
-    const apiClient = ServerConnections.getApiClient(options.serverId);
-
-    const replaceAllMetadata = dlg.querySelector('#selectMetadataRefreshMode').value === 'all';
-
-    const mode = dlg.querySelector('#selectMetadataRefreshMode').value === 'scan' ? 'Default' : 'FullRefresh';
+    const selectedMode = dlg.querySelector('#selectMetadataRefreshMode').value;
+    const imagesOnly = selectedMode === 'images';
+    const mode = selectedMode === 'scan' ? 'Default' : 'FullRefresh';
     const replaceAllImages = mode === 'FullRefresh' && dlg.querySelector('.chkReplaceImages').checked;
     const replaceTrickplayImages = mode === 'FullRefresh' && dlg.querySelector('.chkReplaceTrickplayImages').checked;
+
+    if (imagesOnly && !replaceAllImages && !replaceTrickplayImages) {
+        updateControls(dlg);
+        return;
+    }
+
+    loading.show();
+    const apiClient = ServerConnections.getApiClient(options.serverId);
 
     options.itemIds.forEach(function (itemId) {
         apiClient.refreshItem(itemId, {
             Recursive: true,
-            ImageRefreshMode: mode,
-            MetadataRefreshMode: mode,
+            ImageRefreshMode: imagesOnly && !replaceAllImages ? 'None' : mode,
+            MetadataRefreshMode: imagesOnly ? 'None' : mode,
             ReplaceAllImages: replaceAllImages,
             RegenerateTrickplay: replaceTrickplayImages,
-            ReplaceAllMetadata: replaceAllMetadata
+            ReplaceAllMetadata: selectedMode === 'all',
+            IgnoreNfo: imagesOnly || dlg.querySelector('.chkIgnoreNfo').checked
         });
     });
 
@@ -95,9 +113,21 @@ function onSubmit(e) {
     toast(globalize.translate('RefreshQueued'));
 
     loading.hide();
+}
 
-    e.preventDefault();
-    return false;
+function updateControls(dlg) {
+    const selectedMode = dlg.querySelector('#selectMetadataRefreshMode').value;
+    const imagesOnly = selectedMode === 'images';
+    const scan = selectedMode === 'scan';
+    const noImagesSelected = imagesOnly && !dlg.querySelector('.chkReplaceImages').checked && !dlg.querySelector('.chkReplaceTrickplayImages').checked;
+
+    dlg.querySelector('.fldReplaceExistingImages').classList.toggle('hide', scan);
+    dlg.querySelector('.fldReplaceTrickplayImages').classList.toggle('hide', scan);
+    dlg.querySelector('.fldIgnoreNfo').classList.toggle('hide', imagesOnly);
+    dlg.querySelector('.chkIgnoreNfo').disabled = imagesOnly;
+    dlg.querySelector('.refreshModeHelp').textContent = globalize.translate(imagesOnly ? 'RefreshImagesOnlyHelp' : 'RefreshDialogHelp');
+    dlg.querySelector('.imagesSelectionHelp').classList.toggle('hide', !noImagesSelected);
+    dlg.querySelector('.btnSubmit').disabled = noImagesSelected;
 }
 
 class RefreshDialog {
@@ -138,15 +168,12 @@ class RefreshDialog {
 
         dlg.querySelector('form').addEventListener('submit', onSubmit.bind(this));
 
-        dlg.querySelector('#selectMetadataRefreshMode').addEventListener('change', function () {
-            if (this.value === 'scan') {
-                dlg.querySelector('.fldReplaceExistingImages').classList.add('hide');
-                dlg.querySelector('.fldReplaceTrickplayImages').classList.add('hide');
-            } else {
-                dlg.querySelector('.fldReplaceExistingImages').classList.remove('hide');
-                dlg.querySelector('.fldReplaceTrickplayImages').classList.remove('hide');
-            }
-        });
+        const onOptionsChanged = function () {
+            updateControls(dlg);
+        };
+        dlg.querySelector('#selectMetadataRefreshMode').addEventListener('change', onOptionsChanged);
+        dlg.querySelector('.chkReplaceImages').addEventListener('change', onOptionsChanged);
+        dlg.querySelector('.chkReplaceTrickplayImages').addEventListener('change', onOptionsChanged);
 
         if (this.options.mode) {
             dlg.querySelector('#selectMetadataRefreshMode').value = this.options.mode;

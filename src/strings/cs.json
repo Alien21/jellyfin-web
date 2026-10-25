@@ -751,6 +751,16 @@
     "Refresh": "Aktualizovat",
     "RefreshDialogHelp": "Metadata se aktualizují na základě nastavení a internetových služeb, které jsou povoleny na nástěnce.",
 
+    "RefreshImagesOnly": "Aktualizovat pouze obrázky",
+
+    "RefreshImagesOnlyHelp": "Aktualizuje pouze vybrané typy obrázků podle nastavení knihovny. Názvy, popisy a soubory NFO zůstanou beze změny.",
+
+    "RefreshImagesSelectionHelp": "Vyberte existující obrázky, obrázky trickplay nebo obojí.",
+
+    "IgnoreNfo": "Ignorovat soubory NFO",
+
+    "IgnoreNfoHelp": "Při této aktualizaci ignoruje metadata a odkazy na obrázky načítané ze souborů NFO.",
+
     "EnableLocalizedNfoUpdates": "Aktualizovat NFO přeloženými hodnotami",
 
     "EnableLocalizedNfoUpdatesHelp": "Při načítání NFO nahradí nepřeložené údaje a odkazy na obrázky dostupnou variantou v preferovaném jazyce knihovny a uloží je zpět do stejného souboru. Už přeložené hodnoty a údaje bez dostupného překladu zachová.",

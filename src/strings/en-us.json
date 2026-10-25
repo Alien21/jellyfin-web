@@ -1533,6 +1533,16 @@
     "Refresh": "Refresh",
     "RefreshDialogHelp": "Metadata is refreshed based on settings and internet services that are enabled in the Dashboard.",
 
+    "RefreshImagesOnly": "Refresh images only",
+
+    "RefreshImagesOnlyHelp": "Refreshes only the selected image types using the library settings. Titles, descriptions and NFO files stay unchanged.",
+
+    "RefreshImagesSelectionHelp": "Select existing images, trickplay images, or both to refresh.",
+
+    "IgnoreNfo": "Ignore NFO files",
+
+    "IgnoreNfoHelp": "Ignores metadata and artwork URLs read from NFO files for this refresh.",
+
     "EnableLocalizedNfoUpdates": "Update NFO with localized metadata",
 
     "EnableLocalizedNfoUpdatesHelp": "When reading NFO files, replaces untranslated values and artwork links with available versions in the library's preferred language and saves them to the same file. Existing translations and values without an available translation are preserved.",
