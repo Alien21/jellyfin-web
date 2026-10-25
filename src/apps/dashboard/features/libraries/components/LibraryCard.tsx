@@ -27,6 +27,7 @@ import { useApi } from 'hooks/useApi';
 import { ImageType } from '@jellyfin/sdk/lib/generated-client/models/image-type';
 import dom from 'utils/dom';
 import { invalidateVirtualFolders } from '../api/invalidateVirtualFolders';
+import RefreshIndicator from 'elements/emby-itemrefreshindicator/RefreshIndicator';
 
 type LibraryCardProps = {
     virtualFolder: VirtualFolderInfo;
@@ -183,6 +184,7 @@ const LibraryCard = ({ virtualFolder }: LibraryCardProps) => {
                 title={virtualFolder.Name || ''}
                 text={typeName}
                 image={imageUrl}
+                imageOverlay={<RefreshIndicator item={{ ...virtualFolder, Id: virtualFolder.ItemId }} />}
                 icon={<Icon sx={{ fontSize: 70 }}>{getLibraryIcon(virtualFolder.CollectionType)}</Icon>}
                 action={true}
                 actionRef={actionRef}

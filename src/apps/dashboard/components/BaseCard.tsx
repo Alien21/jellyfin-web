@@ -16,6 +16,7 @@ interface BaseCardProps {
     text?: string;
     image?: string | null;
     icon?: React.ReactNode;
+    imageOverlay?: React.ReactNode;
     to?: To;
     onClick?: () => void;
     action?: boolean;
@@ -30,6 +31,7 @@ const BaseCard = ({
     text,
     image,
     icon,
+    imageOverlay,
     to,
     onClick,
     action,
@@ -54,6 +56,7 @@ const BaseCard = ({
                 })}
                 onClick={onClick}
                 sx={{
+                    position: 'relative',
                     display: 'flex',
                     flexGrow: 1,
                     alignItems: 'stretch'
@@ -73,6 +76,11 @@ const BaseCard = ({
                         justifyContent: 'center'
                     }}>
                         {icon}
+                    </Box>
+                )}
+                {imageOverlay && (
+                    <Box sx={{ position: 'absolute', top: 8, right: 8, pointerEvents: 'none' }}>
+                        {imageOverlay}
                     </Box>
                 )}
             </CardActionArea>
