@@ -1,5 +1,6 @@
 import { isLibrarySourceDetailsEnabled } from 'utils/extensions';
 import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client/models/base-item-kind';
+import { PersonKind } from '@jellyfin/sdk/lib/generated-client/models/person-kind';
 
 import listView from 'components/listview/listview';
 import cardBuilder from 'components/cardbuilder/cardBuilder';
@@ -425,7 +426,7 @@ function getItemsFunction(options, item) {
 
         if (query.IncludeItemTypes === 'MusicArtist') {
             query.IncludeItemTypes = null;
-            return apiClient.getAlbumArtists(apiClient.getCurrentUserId(), query);
+            return apiClient.getPeople(apiClient.getCurrentUserId(), { ...query, PersonTypes: PersonKind.AlbumArtist });
         }
 
         return apiClient.getItems(apiClient.getCurrentUserId(), query);

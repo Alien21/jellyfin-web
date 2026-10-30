@@ -30,6 +30,7 @@ import 'elements/emby-ratingbutton/emby-ratingbutton';
 import 'styles/videoosd.scss';
 import shell from 'scripts/shell';
 import SubtitleSync from 'components/subtitlesync/subtitlesync';
+import loading from 'components/loading/loading';
 import { appRouter } from 'components/router/appRouter';
 import { ServerConnections } from 'lib/jellyfin-apiclient';
 import LibraryMenu from 'scripts/libraryMenu';
@@ -580,6 +581,22 @@ export default function (view) {
         view.querySelector('.osdMediaStatus').classList.add('hide');
     }
 
+    let loadingTimeout;
+
+    function onWaiting() {
+        loadingTimeout = setTimeout(() => {
+            loading.show();
+        }, 500);
+    }
+
+    function onCanPlay() {
+        if (loadingTimeout) {
+            clearTimeout(loadingTimeout);
+            loadingTimeout = null;
+        }
+        loading.hide();
+    }
+
     function bindToPlayer(player) {
         if (player !== currentPlayer) {
             releaseCurrentPlayer();
@@ -601,6 +618,8 @@ export default function (view) {
         Events.on(player, 'mediastreamschange', onMediaStreamsChanged);
         Events.on(player, 'beginFetch', onBeginFetch);
         Events.on(player, 'endFetch', onEndFetch);
+        Events.on(player, 'waiting', onWaiting);
+        Events.on(player, 'canplay', onCanPlay);
         resetUpNextDialog();
 
         if (player.isFetching) {
@@ -609,6 +628,11 @@ export default function (view) {
     }
 
     function releaseCurrentPlayer() {
+        if (loadingTimeout) {
+            clearTimeout(loadingTimeout);
+            loadingTimeout = null;
+        }
+
         destroyStats();
         destroySubtitleSync();
         resetUpNextDialog();
@@ -626,6 +650,8 @@ export default function (view) {
             Events.off(player, 'mediastreamschange', onMediaStreamsChanged);
             Events.off(player, 'beginFetch', onBeginFetch);
             Events.off(player, 'endFetch', onEndFetch);
+            Events.off(player, 'waiting', onWaiting);
+            Events.off(player, 'canplay', onCanPlay);
             currentPlayer = null;
         }
     }

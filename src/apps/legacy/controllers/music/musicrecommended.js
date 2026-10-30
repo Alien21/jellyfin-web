@@ -8,6 +8,7 @@ import * as mainTabsManager from 'components/maintabsmanager';
 import browser from 'scripts/browser';
 import dom from 'utils/dom';
 import globalize from 'lib/globalize';
+import { ServerConnections } from 'lib/jellyfin-apiclient';
 import inputManager from 'scripts/inputManager';
 import libraryMenu from 'scripts/libraryMenu';
 import * as userSettings from 'scripts/settings/userSettings';
@@ -45,7 +46,8 @@ function enableScrollX() {
 
 function loadLatest(page, parentId) {
     loading.show();
-    const userId = ApiClient.getCurrentUserId();
+    const apiClient = ServerConnections.currentApiClient();
+    const userId = apiClient.getCurrentUserId();
     const options = {
         IncludeItemTypes: 'Audio',
         Limit: enableScrollX() ? 3 * itemsPerRow() : 2 * itemsPerRow(),
@@ -55,7 +57,7 @@ function loadLatest(page, parentId) {
         EnableImageTypes: 'Primary,Backdrop,Banner,Thumb',
         EnableTotalRecordCount: false
     };
-    ApiClient.getJSON(ApiClient.getUrl('Users/' + userId + '/Items/Latest', options)).then(function (items) {
+    apiClient.getJSON(apiClient.getUrl('Users/' + userId + '/Items/Latest', options)).then(function (items) {
         const elem = page.querySelector('#recentlyAddedSongs');
         elem.innerHTML = cardBuilder.getCardsHtml({
             items: items,
@@ -81,6 +83,7 @@ function loadLatest(page, parentId) {
 }
 
 function loadRecentlyPlayed(page, parentId) {
+    const apiClient = ServerConnections.currentApiClient();
     const options = {
         SortBy: 'DatePlayed',
         SortOrder: 'Descending',
@@ -94,7 +97,7 @@ function loadRecentlyPlayed(page, parentId) {
         EnableImageTypes: 'Primary,Backdrop,Banner,Thumb',
         EnableTotalRecordCount: false
     };
-    ApiClient.getItems(ApiClient.getCurrentUserId(), options).then(function (result) {
+    apiClient.getItems(apiClient.getCurrentUserId(), options).then(function (result) {
         const elem = page.querySelector('#recentlyPlayed');
 
         if (result.Items.length) {
@@ -123,6 +126,7 @@ function loadRecentlyPlayed(page, parentId) {
 }
 
 function loadFrequentlyPlayed(page, parentId) {
+    const apiClient = ServerConnections.currentApiClient();
     const options = {
         SortBy: 'PlayCount',
         SortOrder: 'Descending',
@@ -136,7 +140,7 @@ function loadFrequentlyPlayed(page, parentId) {
         EnableImageTypes: 'Primary,Backdrop,Banner,Thumb',
         EnableTotalRecordCount: false
     };
-    ApiClient.getItems(ApiClient.getCurrentUserId(), options).then(function (result) {
+    apiClient.getItems(apiClient.getCurrentUserId(), options).then(function (result) {
         const elem = page.querySelector('#topPlayed');
 
         if (result.Items.length) {
@@ -171,7 +175,12 @@ function loadSuggestionsTab(page, tabContent, parentId) {
     loadFrequentlyPlayed(tabContent, parentId);
 
     import('components/favoriteitems').then(({ default: favoriteItems }) => {
-        favoriteItems.render(tabContent, ApiClient.getCurrentUserId(), parentId, ['favoriteArtists', 'favoriteAlbums', 'favoriteSongs']);
+        favoriteItems.render(
+            tabContent,
+            ServerConnections.currentApiClient().getCurrentUserId(),
+            parentId,
+            ['favoriteArtists', 'favoriteAlbums', 'favoriteSongs']
+        );
     });
 }
 
@@ -377,7 +386,8 @@ export default function (view, params) {
             const parentId = params.topParentId;
 
             if (parentId) {
-                ApiClient.getItem(ApiClient.getCurrentUserId(), parentId).then(function (item) {
+                const apiClient = ServerConnections.currentApiClient();
+                apiClient.getItem(apiClient.getCurrentUserId(), parentId).then(function (item) {
                     view.setAttribute('data-title', item.Name);
                     libraryMenu.setTitle(item.Name);
                 });

@@ -293,5 +293,7 @@
     "ActivitiesLoadError": "Gagal untuk memuatkan aktiviti",
     "BitmapSubtitleAspectModeContain": "Mengandungi",
     "TrackHearingImpaired": "Lemah Pendengaran",
-    "MediaInfoOriginal": "Asal"
+    "MediaInfoOriginal": "Asal",
+    "Alternate": "Silih berganti",
+    "AlwaysBurnInSubtitleWhenTranscoding": "Sentiasa terapkan sarikata secara kekal semasa melakukan transkod"
 }

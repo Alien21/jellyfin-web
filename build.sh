@@ -9,7 +9,7 @@ if ! command -v "$node_bin" >/dev/null 2>&1; then
     exit 1
 fi
 
-"$node_bin" -e 'if (Number(process.versions.node.split(".")[0]) < 24) { console.error("Node.js >=24 is required. Install Node.js 24+ or set NODE_BIN; see README.build.md."); process.exit(1); }'
+"$node_bin" -e 'if (Number(process.versions.node.split(".")[0]) < 24) { console.error("Node.js 24+ is required. Install Node.js 24+ or set NODE_BIN; see README.build.md."); process.exit(1); }'
 
 if [[ -n "${NPM_CLI:-}" ]] && command -v cygpath >/dev/null 2>&1; then
     export NPM_CLI="$(cygpath -w "$NPM_CLI")"
