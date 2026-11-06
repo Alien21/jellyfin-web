@@ -1947,5 +1947,7 @@
     "LabelHlsAudioSeekStrategy": "Strategi for lydspoling.",
     "MessageItemMetadataLocked": "Dette elements metadata er låst. Lås dem op, før du bruger funktionen Identificér.",
     "TrackHearingImpaired": "Hørehæmmet",
-    "MediaInfoOriginal": "Original"
+    "MediaInfoOriginal": "Original",
+    "ManageMetadata": "Administrér metadata",
+    "ManageServer": "Administrér server"
 }

@@ -49,18 +49,20 @@ const config = {
     },
     target: 'browserslist',
     entry: {
-        'main.jellyfin': './index.jsx',
+        'main.jellyfin': './index.tsx',
         ...THEMES_BY_ID
     },
     resolve: {
-        alias: {
-            '@formatjs/intl-displaynames/locale-data': path.resolve(__dirname, 'node_modules/@formatjs/intl-displaynames/locale-data')
-        },
         extensions: ['.tsx', '.ts', '.js'],
         modules: [
             path.resolve(__dirname, 'src'),
             path.resolve(__dirname, 'node_modules')
-        ]
+        ],
+        alias: {
+            // Keep in sync with tsconfig.json.
+            '@': path.resolve(__dirname, 'src'),
+            '@formatjs/intl-displaynames/locale-data': path.resolve(__dirname, 'node_modules/@formatjs/intl-displaynames/locale-data')
+        }
     },
     plugins: [
         new DefinePlugin({
@@ -81,8 +83,7 @@ const config = {
             // Append file hashes to bundle urls for cache busting
             hash: true,
             chunks: [
-                'main.jellyfin',
-                'serviceworker'
+                'main.jellyfin'
             ]
         }),
         new CopyPlugin({
@@ -128,9 +129,7 @@ const config = {
         })
     ],
     output: {
-        filename: pathData => (
-            pathData.chunk.name === 'serviceworker' ? '[name].js' : '[name].bundle.js'
-        ),
+        filename: '[name].bundle.js',
         chunkFilename: '[name].[contenthash].chunk.js',
         assetModuleFilename: pathData => {
             if (pathData.filename === 'manifest.json') {

@@ -1947,5 +1947,7 @@
     "MessageForgotPasswordRedirect": "Du har omdirigerats till en extern leverantör för lösenordsåterställning.",
     "MessageItemMetadataLocked": "Objektets metadata är låsta. Lås upp dem innan du använder funktionen Identifiera.",
     "TrackHearingImpaired": "Hörselskadad",
-    "MediaInfoOriginal": "Original"
+    "MediaInfoOriginal": "Original",
+    "ManageMetadata": "Hantera Metadata",
+    "ManageServer": "Hantera Server"
 }

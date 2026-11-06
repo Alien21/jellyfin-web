@@ -1947,5 +1947,7 @@
     "LabelBitmapSubtitleAspectMode": "Bitmap Untertitel Seitenverhältnismodus",
     "MessageItemMetadataLocked": "Die Metadaten des Elements sind gesperrt. Entsperre sie, bevor die Identifitätsfunktion genutzt wird.",
     "TrackHearingImpaired": "Hörgeschädigt",
-    "MediaInfoOriginal": "Original"
+    "MediaInfoOriginal": "Original",
+    "ManageMetadata": "Metadaten verwalten",
+    "ManageServer": "Server verwalten"
 }

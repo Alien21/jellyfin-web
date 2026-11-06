@@ -1947,5 +1947,7 @@
     "LabelVppTonemappingContrast": "Mótsetningahækkan undir VPP-tónaavmyndan",
     "LabelVppTonemappingContrastHelp": "Hækka litmótsetningar undir VPP-tónaavmyndan. Tilmælda virðið er 1.",
     "TrackHearingImpaired": "Hoyrnarveik",
-    "MediaInfoOriginal": "Upprunalig(t/ur)"
+    "MediaInfoOriginal": "Upprunalig(t/ur)",
+    "ManageMetadata": "Umsit metadátur",
+    "ManageServer": "Umsit ambætara"
 }

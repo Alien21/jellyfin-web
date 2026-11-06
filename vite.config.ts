@@ -22,6 +22,7 @@ export default defineConfig({
             reportsDirectory: buildPath('_tests', 'coverage')
         },
         environment: 'jsdom',
-        restoreMocks: true
+        restoreMocks: true,
+        setupFiles: [ 'src/test/setup.ts' ]
     }
 });

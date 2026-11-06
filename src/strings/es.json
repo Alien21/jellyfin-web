@@ -1947,5 +1947,7 @@
     "MessageForgotPasswordRedirect": "Has sido redirigido a un proveedor externo para restablecer la contraseña.",
     "MessageItemMetadataLocked": "Los metadatos de este elemento están bloqueados. Desbloquéalos antes de usar la función Identificar.",
     "TrackHearingImpaired": "Discapacidad Auditiva",
-    "MediaInfoOriginal": "Original"
+    "MediaInfoOriginal": "Original",
+    "ManageMetadata": "Administrar metadatos",
+    "ManageServer": "Administrar servidor"
 }

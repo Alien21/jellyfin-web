@@ -124,7 +124,7 @@ async function runStep(name: string, command: string, args: string[], options: {
 }
 
 function verifyOutput() {
-    for (const relative of ['index.html', 'config.json', 'serviceworker.js']) {
+    for (const relative of ['index.html', 'config.json']) {
         if (!fs.statSync(path.join(output, relative)).isFile()) throw new Error(`Missing output: ${relative}`);
     }
     const themes = fs.readdirSync(path.join(root, 'src', 'themes')).filter((name) =>

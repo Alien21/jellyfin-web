@@ -7,13 +7,11 @@ import itemHelper from '../itemHelper';
 import { ItemKind } from 'types/base/models/item-kind';
 import { ItemMediaKind } from 'types/base/models/item-media-kind';
 import { ItemStatus } from 'types/base/models/item-status';
-import type {
-    NullableNumber,
-    NullableString
-} from 'types/base/common/shared/types';
 import type { ItemDto } from 'types/base/models/item-dto';
 import type { MiscInfo } from 'types/mediaInfoItem';
-import { PrimaryInfoOpts } from './type';
+import type { Nullable } from '@/types/nullable';
+
+import type { PrimaryInfoOpts } from './type';
 
 function shouldShowFolderRuntime(
     showFolderRuntimeInfo: boolean,
@@ -33,9 +31,9 @@ function shouldShowFolderRuntime(
 function addTrackCountOrItemCount(
     isFolderRuntimeEnabled: boolean,
     showItemCountInfo: boolean,
-    itemSongCount: NullableNumber,
-    itemChildCount: NullableNumber,
-    itemRunTimeTicks: NullableNumber,
+    itemSongCount: Nullable<number>,
+    itemChildCount: Nullable<number>,
+    itemRunTimeTicks: Nullable<number>,
     itemType: ItemKind,
     addMiscInfo: (val: MiscInfo) => void
 ): void {
@@ -65,7 +63,7 @@ function addOriginalAirDateInfo(
     showOriginalAirDateInfo: boolean,
     itemType: ItemKind,
     itemMediaType: ItemMediaKind,
-    itemPremiereDate: NullableString,
+    itemPremiereDate: Nullable<string>,
     addMiscInfo: (val: MiscInfo) => void
 ): void {
     if (
@@ -91,9 +89,9 @@ function addSeriesTimerInfo(
     showSeriesTimerInfo: boolean,
     itemType: ItemKind,
     itemRecordAnyTime: boolean | undefined,
-    itemStartDate: NullableString,
+    itemStartDate: Nullable<string>,
     itemRecordAnyChannel: boolean | undefined,
-    itemChannelName: NullableString,
+    itemChannelName: Nullable<string>,
     addMiscInfo: (val: MiscInfo) => void
 ): void {
     if (showSeriesTimerInfo && itemType === ItemKind.SeriesTimer) {
@@ -221,7 +219,7 @@ function addProgramTextInfo(
 
 function addStartDateInfo(
     showStartDateInfo: boolean,
-    itemStartDate: NullableString,
+    itemStartDate: Nullable<string>,
     itemType: ItemKind,
     addMiscInfo: (val: MiscInfo) => void
 ): void {
@@ -247,10 +245,10 @@ function addStartDateInfo(
 
 function addSeriesProductionYearInfo(
     showYearInfo: boolean,
-    itemProductionYear: NullableNumber,
+    itemProductionYear: Nullable<number>,
     itemType: ItemKind,
     itemStatus: ItemStatus,
-    itemEndDate: NullableString,
+    itemEndDate: Nullable<string>,
     addMiscInfo: (val: MiscInfo) => void
 ): void {
     if (showYearInfo && itemProductionYear && itemType === ItemKind.Series) {
@@ -275,7 +273,7 @@ function addSeriesProductionYearInfo(
 
 function addproductionYearWithEndDate(
     itemProductionYear: number,
-    itemEndDate: NullableString,
+    itemEndDate: Nullable<string>,
     addMiscInfo: (val: MiscInfo) => void
 ): void {
     let productionYear = datetime.toLocaleString(itemProductionYear, {
@@ -303,8 +301,8 @@ function addYearInfo(
     showYearInfo: boolean,
     itemType: ItemKind,
     itemMediaType: ItemMediaKind,
-    itemProductionYear: NullableNumber,
-    itemPremiereDate: NullableString,
+    itemProductionYear: Nullable<number>,
+    itemPremiereDate: Nullable<string>,
     addMiscInfo: (val: MiscInfo) => void
 ): void {
     if (
@@ -334,7 +332,7 @@ function addYearInfo(
 
 function addVideo3DFormat(
     showVideo3DFormatInfo: boolean,
-    itemVideo3DFormat: NullableString,
+    itemVideo3DFormat: Nullable<string>,
     addMiscInfo: (val: MiscInfo) => void
 ): void {
     if (showVideo3DFormatInfo && itemVideo3DFormat) {
@@ -345,7 +343,7 @@ function addVideo3DFormat(
 function addRunTimeInfo(
     isFolderRuntimeEnabled: boolean,
     showRuntimeInfo: boolean,
-    itemRunTimeTicks: NullableNumber,
+    itemRunTimeTicks: Nullable<number>,
     itemType: ItemKind,
     addMiscInfo: (val: MiscInfo) => void
 ): void {
@@ -372,7 +370,7 @@ function addRunTimeInfo(
 
 function addOfficialRatingInfo(
     showOfficialRatingInfo: boolean,
-    itemOfficialRating: NullableString,
+    itemOfficialRating: Nullable<string>,
     itemType: ItemKind,
     addMiscInfo: (val: MiscInfo) => void
 ): void {
@@ -391,7 +389,7 @@ function addOfficialRatingInfo(
 
 function addAudioContainer(
     showAudioContainerInfo: boolean,
-    itemContainer: NullableString,
+    itemContainer: Nullable<string>,
     itemType: ItemKind,
     addMiscInfo: (val: MiscInfo) => void
 ): void {
@@ -407,8 +405,8 @@ function addAudioContainer(
 function addPhotoSize(
     showPhotoSizeInfo: boolean,
     itemMediaType: ItemMediaKind,
-    itemWidth: NullableNumber,
-    itemHeight: NullableNumber,
+    itemWidth: Nullable<number>,
+    itemHeight: Nullable<number>,
     addMiscInfo: (val: MiscInfo) => void
 ): void {
     if (
